@@ -1,0 +1,82 @@
+name: Deploy Backend to Google Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - qa
+      - prod
+    paths:
+      - 'lumina-studio-backend/**'
+      - '.github/workflows/deploy-gcp.yml'
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }} # Enter your GCP Project ID in GitHub Secrets
+  REGION: us-central1                          # Customize your preferred GCP region
+  SERVICE_NAME: lumina-backend-${{ github.ref_name }} # e.g., lumina-backend-dev, lumina-backend-prod
+  IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/lumina-backend-${{ github.ref_name }}:${{ github.sha }}
+
+jobs:
+  deploy:
+    name: Build & Deploy Container
+    runs-on: ubuntu-latest
+
+    # Setup permissions for Workload Identity Federation (recommended)
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: Authenticate to Google Cloud
+      # Supports both modern Workload Identity Federation and traditional Service Account Keys
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          # If using Workload Identity Federation, configure these secrets:
+          # workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          # service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          
+          # Or if using traditional Service Account Key JSON:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      # Step 3: Set up Google Cloud SDK
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      # Step 4: Configure Docker Authentication for Container Registry
+      - name: Configure Docker Auth
+        run: |
+          gcloud auth configure-docker --quiet
+
+      # Step 5: Build and Push Docker Image
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t $IMAGE_NAME ./lumina-studio-backend
+          docker push $IMAGE_NAME
+
+      # Step 6: Deploy to Google Cloud Run
+      - name: Deploy to Google Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ env.SERVICE_NAME }}
+          image: ${{ env.IMAGE_NAME }}
+          region: ${{ env.REGION }}
+          flags: |
+            --allow-unauthenticated
+            --port=8080
+          # We pass production environment variables here or mount Secret Manager secrets
+          # env_vars: |
+          #   NODE_ENV=production
+          #   DB_HOST=${{ secrets.DB_HOST }}
+          #   DB_USER=${{ secrets.DB_USER }}
+          #   DB_NAME=${{ secrets.DB_NAME }}
+          #   DB_PORT=5432
+          # secrets: |
+          #   DB_PASSWORD=DB_PASSWORD:latest
+          #   JWT_SECRET=JWT_SECRET:latest
+          #   GCS_BUCKET_NAME=GCS_BUCKET_NAME:latest
