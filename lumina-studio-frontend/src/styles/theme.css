@@ -1,0 +1,188 @@
+/* ============================================================
+   theme.css — Reusable utility classes shared across components.
+   Use these as building blocks; component-specific rules stay
+   in the component's own CSS file.
+   ============================================================ */
+
+/* ---- Typography utilities ---- */
+.title-serif {
+    font-family: var(--font-serif);
+}
+
+.gold-text {
+    color: var(--gold);
+}
+
+.text-muted {
+    color: var(--text-secondary);
+}
+
+.text-error {
+    color: var(--error-color);
+}
+
+.text-success {
+    color: var(--success-color);
+}
+
+.text-upper {
+    text-transform: uppercase;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-sm {
+    font-size: 0.8rem;
+}
+
+.text-xs {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+}
+
+/* ---- Section kicker / label ---- */
+.section-kicker {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+}
+
+/* ---- Shared button styles ---- */
+.btn-outline {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.6rem 1.4rem;
+    transition: border-color var(--transition-normal), color var(--transition-normal);
+}
+
+.btn-outline:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+.btn-gold {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.75rem 1.5rem;
+    background: var(--gold);
+    color: #000;
+    font-weight: 600;
+    transition: background-color var(--transition-normal);
+}
+
+.btn-gold:hover {
+    background: var(--gold-hover);
+}
+
+/* ---- Shared navbar styles (used in HomePage + StoreView) ---- */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-navbar);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 4rem;
+    background: linear-gradient(to bottom, rgba(18, 17, 16, 0.9) 0%, transparent 100%);
+}
+
+.logo-serif {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    letter-spacing: 0.15em;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2.5rem;
+}
+
+.nav-link {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    transition: color var(--transition-fast);
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--text-primary);
+    opacity: 1;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.bag-icon {
+    width: 22px;
+    height: 22px;
+    color: var(--text-primary);
+    transition: color var(--transition-fast);
+    cursor: pointer;
+}
+
+.bag-icon:hover {
+    color: var(--gold);
+}
+
+/* ---- Shared footer ---- */
+.footer-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.footer-link {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.footer-link:hover {
+    color: var(--text-primary);
+    opacity: 1;
+}
+
+.copyright {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+/* ---- Input base ---- */
+.input-base {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem 0;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color var(--transition-normal);
+    width: 100%;
+}
+
+.input-base:focus {
+    border-bottom-color: var(--gold);
+}
+
+.input-base::placeholder {
+    color: #444;
+}

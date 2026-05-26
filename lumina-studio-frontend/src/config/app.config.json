@@ -1,0 +1,24 @@
+{
+    "environments": {
+        "localhost": {
+            "API_BASE_URL": "http://localhost:5000/api",
+            "TIMEOUT_MS": 15000,
+            "RETRY_COUNT": 1
+        },
+        "development": {
+            "API_BASE_URL": "http://dev.lumina-studio.com/api",
+            "TIMEOUT_MS": 15000,
+            "RETRY_COUNT": 2
+        },
+        "staging": {
+            "API_BASE_URL": "https://staging.lumina-studio.com/api",
+            "TIMEOUT_MS": 20000,
+            "RETRY_COUNT": 2
+        },
+        "production": {
+            "API_BASE_URL": "https://api.lumina-studio.com/api",
+            "TIMEOUT_MS": 20000,
+            "RETRY_COUNT": 3
+        }
+    }
+}

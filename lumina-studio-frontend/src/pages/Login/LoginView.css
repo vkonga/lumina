@@ -1,0 +1,214 @@
+/* LoginView.css — Co-located with src/pages/Login/LoginView.jsx */
+.login-container {
+    display: flex;
+    height: 100vh;
+    background-color: #0d0d0d;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+}
+
+.login-left-panel {
+    flex: 1.2;
+    position: relative;
+    background-image: url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    padding: 80px;
+}
+
+.login-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(13, 13, 13, 0.9) 0%, rgba(13, 13, 13, 0.2) 100%);
+    z-index: 1;
+}
+
+.login-hero-text {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+}
+
+.hero-quote-title {
+    font-family: var(--font-serif);
+    font-size: 3.5rem;
+    line-height: 1.1;
+    margin-bottom: 24px;
+}
+
+.hero-quote-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+}
+
+.login-right-panel {
+    flex: 0.8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.login-form-box {
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-header {
+    margin-bottom: 48px;
+    text-align: center;
+}
+
+.login-welcome {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    color: #d4af37;
+    margin-bottom: 8px;
+}
+
+.login-kicker {
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+}
+
+.login-form .input-group {
+    margin-bottom: 32px;
+}
+
+.login-form .input-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 12px;
+}
+
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.forgot-pass {
+    font-size: 0.75rem;
+    color: #d4af37;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 12px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: var(--font-sans);
+    outline: none;
+    transition: border-bottom-color var(--transition-normal);
+}
+
+.login-form input:focus {
+    border-bottom-color: #d4af37;
+}
+
+.login-error {
+    font-size: 0.82rem;
+    color: var(--error-color);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.btn-signin {
+    width: 100%;
+    padding: 18px;
+    background-color: #f1d592;
+    color: #000;
+    border: none;
+    font-weight: 700;
+    font-family: var(--font-sans);
+    letter-spacing: 2px;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: background-color var(--transition-normal);
+}
+
+.btn-signin:hover:not(:disabled) {
+    background-color: #e5c06d;
+}
+
+.btn-signin:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.login-divider {
+    margin: 40px 0;
+    position: relative;
+    text-align: center;
+}
+
+.login-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1;
+}
+
+.login-divider span {
+    position: relative;
+    z-index: 2;
+    background: #0d0d0d;
+    padding: 0 16px;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 1px;
+}
+
+.btn-create-account {
+    width: 100%;
+    padding: 16px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+    font-weight: 600;
+    font-family: var(--font-sans);
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: border-color var(--transition-normal);
+}
+
+.btn-create-account:hover {
+    border-color: #d4af37;
+}
+
+.login-footer {
+    margin-top: 64px;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+}
+
+.login-footer a {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 1px;
+}
+
+.login-footer a:hover {
+    color: #d4af37;
+    opacity: 1;
+}
+
+@media (max-width: 900px) {
+    .login-left-panel {
+        display: none;
+    }
+}

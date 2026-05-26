@@ -1,0 +1,37 @@
+/* ============================================================
+   responsive.css — Shared responsive breakpoint utilities.
+   Component-specific responsive rules live in each component's CSS.
+   ============================================================ */
+
+/* ---- Hide on mobile ---- */
+@media (max-width: 768px) {
+    .hide-mobile {
+        display: none !important;
+    }
+}
+
+/* ---- Hide on desktop ---- */
+@media (min-width: 769px) {
+    .hide-desktop {
+        display: none !important;
+    }
+}
+
+/* ---- Navbar responsive ---- */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1.2rem 1.5rem;
+    }
+
+    .nav-links {
+        display: none;
+    }
+}
+
+/* ---- Page padding responsive ---- */
+@media (max-width: 768px) {
+    .page-section {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+    }
+}

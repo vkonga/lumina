@@ -1,0 +1,46 @@
+/* ============================================================
+   variables.css — Design token definitions (CSS custom properties).
+   All color, typography, and spacing tokens live here.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+:root {
+    /* Colors */
+    --bg-color: #121110;
+    --panel-bg: #161514;
+    --text-primary: #FFFFFF;
+    --text-secondary: #A3A3A3;
+    --gold: #E2BC82;
+    --gold-hover: #c9a368;
+    --border-color: #2A2826;
+    --input-bg: transparent;
+    --error-color: #d9534f;
+    --success-color: #4caf50;
+
+    /* Typography */
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Inter', sans-serif;
+
+    /* Spacing scale */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 2rem;
+    --space-xl: 4rem;
+    --space-2xl: 6rem;
+
+    /* Border radius */
+    --radius-sm: 2px;
+    --radius-md: 4px;
+
+    /* Z-index scale */
+    --z-navbar: 100;
+    --z-modal: 200;
+    --z-tooltip: 300;
+
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.25s ease;
+    --transition-slow: 0.4s ease;
+}
