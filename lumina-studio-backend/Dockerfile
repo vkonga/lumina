@@ -7,9 +7,9 @@ RUN npm install --omit=dev
 # Stage 2: Production
 FROM node:20-alpine
 WORKDIR /app
-COPY --from=builder /app/node_modules ./node_modules
-COPY package.json ./
-COPY . .
+COPY --from=builder --chown=node:node /app/node_modules ./node_modules
+COPY --chown=node:node package.json ./
+COPY --chown=node:node . .
 
 # Set production environment variables
 ENV NODE_ENV=production
