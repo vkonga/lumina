@@ -10,6 +10,7 @@ WORKDIR /app
 COPY --from=builder --chown=node:node /app/node_modules ./node_modules
 COPY --chown=node:node package.json ./
 COPY --chown=node:node . .
+RUN chown -R node:node /app
 
 # Set production environment variables
 ENV NODE_ENV=production
