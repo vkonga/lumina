@@ -10,6 +10,7 @@ on:
     paths:
       - 'lumina-studio-backend/**'
       - '.github/workflows/deploy-gcp.yml'
+  workflow_dispatch:
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }} # Enter your GCP Project ID in GitHub Secrets
