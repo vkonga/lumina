@@ -9,5 +9,7 @@ router.use(authMiddleware);
 
 router.post('/checkout', orderController.checkout);
 router.get('/my-orders', orderController.getMyOrders);
+router.post('/verify-payment', orderController.verifyPayment);
+router.post('/fail-payment', orderController.failPayment);
 
 module.exports = router;

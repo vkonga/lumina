@@ -186,10 +186,57 @@ const updateOrderStatus = async (orderId, status, paymentStatus) => {
   return result.rows[0];
 };
 
+/**
+ * Update Razorpay payment details for a specific order
+ */
+const updateOrderPaymentDetails = async (orderId, details) => {
+  const fields = [];
+  const values = [];
+
+  if (details.payment_status) {
+    values.push(details.payment_status);
+    fields.push(`payment_status = $${values.length}`);
+  }
+  if (details.status) {
+    values.push(details.status);
+    fields.push(`status = $${values.length}`);
+  }
+  if (details.razorpay_order_id !== undefined) {
+    values.push(details.razorpay_order_id);
+    fields.push(`razorpay_order_id = $${values.length}`);
+  }
+  if (details.razorpay_payment_id !== undefined) {
+    values.push(details.razorpay_payment_id);
+    fields.push(`razorpay_payment_id = $${values.length}`);
+  }
+  if (details.razorpay_signature !== undefined) {
+    values.push(details.razorpay_signature);
+    fields.push(`razorpay_signature = $${values.length}`);
+  }
+  if (details.payment_type !== undefined) {
+    values.push(details.payment_type);
+    fields.push(`payment_type = $${values.length}`);
+  }
+
+  if (fields.length === 0) return null;
+
+  values.push(orderId);
+  const query = `
+    UPDATE orders 
+    SET ${fields.join(', ')}, updated_at = CURRENT_TIMESTAMP 
+    WHERE id = $${values.length} 
+    RETURNING *
+  `;
+
+  const result = await pool.query(query, values);
+  return result.rows[0];
+};
+
 module.exports = {
   createOrder,
   getOrderById,
   getUserOrders,
   getAllOrders,
-  updateOrderStatus
+  updateOrderStatus,
+  updateOrderPaymentDetails
 };

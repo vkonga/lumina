@@ -51,4 +51,6 @@ export const UPLOAD_URLS = {
 export const ORDER_URLS = {
     CHECKOUT: '/orders/checkout',
     GET_MY_ORDERS: '/orders/my-orders',
+    VERIFY_PAYMENT: '/orders/verify-payment',
+    FAIL_PAYMENT: '/orders/fail-payment',
 };

@@ -1,5 +1,11 @@
 const orderModel = require('../models/orderModel');
 const cartModel = require('../models/cartModel');
+const Razorpay = require('razorpay');
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_dummykeyid123',
+  key_secret: process.env.RAZORPAY_KEY_SECRET || 'dummykeysecret123456789'
+});
 
 /**
  * Handle checkout and place order
@@ -63,6 +69,37 @@ const checkout = async (req, res, next) => {
 
     const newOrder = await orderModel.createOrder(userId, orderData, items);
 
+    if (payment_method === 'razorpay') {
+      try {
+        const options = {
+          amount: Math.round(total_amount * 100), // Razorpay requires paise
+          currency: 'INR',
+          receipt: `receipt_order_${newOrder.id}`
+        };
+        const rzpOrder = await razorpay.orders.create(options);
+        await orderModel.updateOrderPaymentDetails(newOrder.id, {
+          razorpay_order_id: rzpOrder.id
+        });
+        newOrder.razorpay_order_id = rzpOrder.id; // update local object to return
+        
+        return res.status(201).json({
+          message: 'Order placed, initiating Razorpay payment.',
+          order: newOrder,
+          razorpay: {
+            id: rzpOrder.id,
+            amount: rzpOrder.amount,
+            currency: rzpOrder.currency
+          }
+        });
+      } catch (err) {
+        console.error("Razorpay order creation failed:", err);
+        // Mark payment as failed locally
+        await orderModel.updateOrderPaymentDetails(newOrder.id, { payment_status: 'failed' });
+        newOrder.payment_status = 'failed';
+        return res.status(500).json({ error: 'Razorpay payment creation failed: ' + err.message, order: newOrder });
+      }
+    }
+
     res.status(201).json({
       message: 'Order placed successfully.',
       order: newOrder
@@ -85,7 +122,83 @@ const getMyOrders = async (req, res, next) => {
   }
 };
 
+const verifyPayment = async (req, res, next) => {
+  try {
+    const { order_id, razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+
+    if (!order_id || !razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+      return res.status(400).json({ error: 'Missing signature verification arguments.' });
+    }
+
+    // 1. Verify signature using crypto hmac sha256
+    const crypto = require('crypto');
+    const keySecret = process.env.RAZORPAY_KEY_SECRET || 'dummykeysecret123456789';
+    const hmac = crypto.createHmac('sha256', keySecret);
+    hmac.update(razorpay_order_id + "|" + razorpay_payment_id);
+    const generated_signature = hmac.digest('hex');
+
+    const isSignatureValid = generated_signature === razorpay_signature;
+
+    if (!isSignatureValid) {
+      console.warn("Invalid signature verification attempt.");
+      await orderModel.updateOrderPaymentDetails(order_id, {
+        payment_status: 'failed'
+      });
+      return res.status(400).json({ error: 'Payment verification failed: Invalid signature.' });
+    }
+
+    // 2. Fetch payment details from Razorpay to get the payment type/method (UPI, card, wallet)
+    let paymentType = 'online';
+    try {
+      const paymentDetails = await razorpay.payments.fetch(razorpay_payment_id);
+      if (paymentDetails && paymentDetails.method) {
+        paymentType = paymentDetails.method; // 'card', 'upi', 'netbanking', 'wallet', etc.
+      }
+    } catch (err) {
+      console.error("Failed to fetch payment details from Razorpay:", err.message);
+    }
+
+    // 3. Update database order status to paid and confirmed
+    const updatedOrder = await orderModel.updateOrderPaymentDetails(order_id, {
+      payment_status: 'paid',
+      status: 'confirmed',
+      razorpay_payment_id,
+      razorpay_signature,
+      payment_type: paymentType
+    });
+
+    res.status(200).json({
+      message: 'Payment verified and order confirmed successfully.',
+      order: updatedOrder
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const failPayment = async (req, res, next) => {
+  try {
+    const { order_id } = req.body;
+    if (!order_id) {
+      return res.status(400).json({ error: 'order_id is required.' });
+    }
+
+    const updatedOrder = await orderModel.updateOrderPaymentDetails(order_id, {
+      payment_status: 'failed'
+    });
+
+    res.status(200).json({
+      message: 'Order payment marked as failed.',
+      order: updatedOrder
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   checkout,
-  getMyOrders
+  getMyOrders,
+  verifyPayment,
+  failPayment
 };

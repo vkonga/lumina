@@ -2,6 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import client from '../api/client';
 
+const getPaymentMethodDisplay = (order) => {
+  if (order.payment_method === 'cod') {
+    return 'Cash on Delivery';
+  } else if (order.payment_method === 'razorpay') {
+    const type = order.payment_type ? order.payment_type.toUpperCase() : 'ONLINE';
+    return `Razorpay (${type})`;
+  }
+  return order.payment_method ? order.payment_method.toUpperCase() : 'ONLINE';
+};
+
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -150,9 +160,14 @@ const Orders = () => {
                       <td>{itemsCount} {itemsCount === 1 ? 'item' : 'items'}</td>
                       <td className="table-amount">₹{Math.round(order.total_amount).toLocaleString('en-IN')}</td>
                       <td>
-                        <span className={`status-badge payment ${order.payment_status}`}>
-                          {order.payment_status}
-                        </span>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                          <span className={`status-badge payment ${order.payment_status}`}>
+                            {order.payment_status}
+                          </span>
+                          <span style={{ fontSize: '0.75rem', color: '#888', fontWeight: '500' }}>
+                            {getPaymentMethodDisplay(order)}
+                          </span>
+                        </div>
                       </td>
                       <td>
                         <span className={`status-badge order ${order.status}`}>

@@ -17,3 +17,21 @@ export const checkout = (payload) => {
 export const getMyOrders = () => {
     return client.get(ORDER_URLS.GET_MY_ORDERS);
 };
+
+/**
+ * Verify Razorpay payment signature
+ * @param {{ order_id, razorpay_order_id, razorpay_payment_id, razorpay_signature }} payload
+ * @returns {Promise<{ success, message, data, errors, statusCode }>}
+ */
+export const verifyPayment = (payload) => {
+    return client.post(ORDER_URLS.VERIFY_PAYMENT, payload);
+};
+
+/**
+ * Fail Razorpay payment
+ * @param {{ order_id }} payload
+ * @returns {Promise<{ success, message, data, errors, statusCode }>}
+ */
+export const failPayment = (payload) => {
+    return client.post(ORDER_URLS.FAIL_PAYMENT, payload);
+};

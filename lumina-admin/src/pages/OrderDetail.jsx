@@ -252,6 +252,43 @@ const OrderDetail = () => {
             </form>
           </div>
 
+          {/* Card: Payment Information */}
+          <div className="detail-card info-card">
+            <h3>Payment Ledger Details</h3>
+            
+            <div className="info-block">
+              <span>Payment Gateway</span>
+              <strong>
+                {order.payment_method === 'cod' ? 'Cash on Delivery (COD)' : 
+                 order.payment_method === 'razorpay' ? 'Razorpay Gateway' : 
+                 (order.payment_method ? order.payment_method.toUpperCase() : 'Not Specified')}
+              </strong>
+            </div>
+
+            {order.payment_method === 'razorpay' && (
+              <>
+                <div className="info-block">
+                  <span>Payment Type / Method</span>
+                  <strong style={{ textTransform: 'uppercase', color: '#c3a168' }}>{order.payment_type || 'ONLINE'}</strong>
+                </div>
+
+                <div className="info-block">
+                  <span>Razorpay Order ID</span>
+                  <code style={{ fontSize: '0.85rem', background: 'rgba(255,255,255,0.05)', padding: '2px 6px', borderRadius: '4px', display: 'inline-block', marginTop: '2px' }}>
+                    {order.razorpay_order_id || 'N/A'}
+                  </code>
+                </div>
+
+                <div className="info-block">
+                  <span>Razorpay Payment ID</span>
+                  <code style={{ fontSize: '0.85rem', background: 'rgba(255,255,255,0.05)', padding: '2px 6px', borderRadius: '4px', display: 'inline-block', marginTop: '2px' }}>
+                    {order.razorpay_payment_id || 'N/A'}
+                  </code>
+                </div>
+              </>
+            )}
+          </div>
+
           {/* Card: Delivery Information */}
           <div className="detail-card info-card">
             <h3>Shipping Details</h3>

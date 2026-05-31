@@ -33,6 +33,15 @@ const migrate = async () => {
     `);
     console.log('✔ Created orders table');
 
+    // 2b. Add Razorpay columns to orders table if they don't exist
+    await pool.query(`
+      ALTER TABLE orders ADD COLUMN IF NOT EXISTS razorpay_order_id VARCHAR(255);
+      ALTER TABLE orders ADD COLUMN IF NOT EXISTS razorpay_payment_id VARCHAR(255);
+      ALTER TABLE orders ADD COLUMN IF NOT EXISTS razorpay_signature VARCHAR(255);
+      ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_type VARCHAR(50);
+    `);
+    console.log('✔ Added Razorpay columns to orders table');
+
     // 3. Create order_items table
     await pool.query(`
       CREATE TABLE IF NOT EXISTS order_items (

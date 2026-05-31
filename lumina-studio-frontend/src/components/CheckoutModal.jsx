@@ -4,6 +4,20 @@ import { fetchCart } from '../store/cartSlice';
 import * as orderApi from '../api/order.api';
 import './CheckoutModal.css';
 
+const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
+
 // Local asset image mapping (matching CartDrawer.jsx)
 import frameImg from '../assets/frame.png';
 import teeImg from '../assets/tee.png';
@@ -67,23 +81,103 @@ const CheckoutModal = ({ isOpen, onClose, cartItems, subtotal }) => {
   const handlePlaceOrder = async () => {
     setLoading(true);
     setError('');
+    
     try {
+      // 1. If Razorpay is selected, ensure the Razorpay SDK script is loaded first
+      if (formData.payment_method === 'razorpay') {
+        const scriptLoaded = await loadRazorpayScript();
+        if (!scriptLoaded) {
+          setError('Failed to load Razorpay Payment Gateway script. Please check your internet connection.');
+          setLoading(false);
+          return;
+        }
+      }
+
+      // 2. Submit order creation request to backend
       const response = await orderApi.checkout({
         ...formData,
         total_amount: subtotal
       });
 
-      if (response.success) {
+      if (!response.success) {
+        setError(response.message || 'Failed to place order. Please try again.');
+        setLoading(false);
+        return;
+      }
+
+      // 3. Handle Payment Method Branching
+      if (formData.payment_method === 'razorpay') {
+        const orderData = response.data.order;
+        const rzpConfig = response.data.razorpay;
+
+        const options = {
+          key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_dummykeyid123',
+          amount: rzpConfig.amount,
+          currency: rzpConfig.currency,
+          name: 'Lumina Studios',
+          description: `Order Payment #LUM-${orderData.id}`,
+          order_id: rzpConfig.id,
+          handler: async function (paymentResponse) {
+            setLoading(true);
+            setError('');
+            try {
+              const verifyRes = await orderApi.verifyPayment({
+                order_id: orderData.id,
+                razorpay_order_id: paymentResponse.razorpay_order_id,
+                razorpay_payment_id: paymentResponse.razorpay_payment_id,
+                razorpay_signature: paymentResponse.razorpay_signature
+              });
+
+              if (verifyRes.success) {
+                setOrderId(orderData.id);
+                setStep(3);
+                dispatch(fetchCart()); // Clear local cart
+              } else {
+                setError(verifyRes.message || 'Payment signature verification failed.');
+              }
+            } catch (verifyErr) {
+              setError(verifyErr.message || 'An error occurred while verifying the payment.');
+            } finally {
+              setLoading(false);
+            }
+          },
+          modal: {
+            ondismiss: async function () {
+              setLoading(true);
+              try {
+                await orderApi.failPayment({ order_id: orderData.id });
+              } catch (failErr) {
+                console.error("Failed to notify backend of cancelled payment:", failErr);
+              }
+              setError('Payment process was cancelled or closed.');
+              setLoading(false);
+            }
+          },
+          prefill: {
+            name: formData.delivery_name,
+            contact: formData.delivery_phone
+          },
+          theme: {
+            color: '#c3a168'
+          }
+        };
+
+        const rzp = new window.Razorpay(options);
+        rzp.open();
+      } else {
+        // Standard Cash on Delivery flow
         setOrderId(response.data.order.id);
         setStep(3);
         dispatch(fetchCart()); // Sync cart state to empty
-      } else {
-        setError(response.message || 'Failed to place order. Please try again.');
       }
     } catch (err) {
       setError(err.message || 'An error occurred during checkout.');
     } finally {
-      setLoading(false);
+      // Do not turn off loading immediately for razorpay since the razorpay modal is open asynchronously,
+      // but let's toggle loading off for non-razorpay checkout or error states.
+      if (formData.payment_method !== 'razorpay') {
+        setLoading(false);
+      }
     }
   };
 
@@ -256,43 +350,20 @@ const CheckoutModal = ({ isOpen, onClose, cartItems, subtotal }) => {
                       </div>
                     </label>
 
-                    <label className={`payment-option-card ${formData.payment_method === 'upi' ? 'selected' : ''}`}>
+                    <label className={`payment-option-card ${formData.payment_method === 'razorpay' ? 'selected' : ''}`}>
                       <input
                         type="radio"
                         name="payment_method"
-                        value="upi"
-                        checked={formData.payment_method === 'upi'}
+                        value="razorpay"
+                        checked={formData.payment_method === 'razorpay'}
                         onChange={handleInputChange}
                       />
                       <div className="option-info">
-                        <span className="option-title">UPI Payment (QR Scan)</span>
-                        <span className="option-desc">Scan dynamic QR code at checkout.</span>
-                      </div>
-                    </label>
-
-                    <label className="payment-option-card disabled">
-                      <input type="radio" name="payment_method" disabled />
-                      <div className="option-info">
-                        <span className="option-title">Credit / Debit Card</span>
-                        <span className="option-desc">Coming soon...</span>
+                        <span className="option-title">Online Payment (UPI, Card, Netbanking)</span>
+                        <span className="option-desc">Pay securely using UPI apps, credit/debit cards, or netbanking via Razorpay.</span>
                       </div>
                     </label>
                   </div>
-
-                  {formData.payment_method === 'upi' && (
-                    <div className="upi-qr-container">
-                      <p className="qr-header">UPI QR Code Scanner</p>
-                      <div className="qr-wrapper">
-                        {/* Elegant generated UPI QR placeholder */}
-                        <div className="simulated-qr">
-                          <div className="qr-square"></div>
-                          <div className="qr-scan-line"></div>
-                        </div>
-                      </div>
-                      <p className="qr-instruction">Scan this QR code using GPay, PhonePe, or Paytm to complete payment.</p>
-                      <p className="qr-amount">Amount: <strong>₹{Math.round(subtotal)}</strong></p>
-                    </div>
-                  )}
                 </div>
               </div>
 
@@ -381,7 +452,7 @@ const CheckoutModal = ({ isOpen, onClose, cartItems, subtotal }) => {
               <p><strong>Name:</strong> {formData.delivery_name}</p>
               <p><strong>Phone:</strong> {formData.delivery_phone}</p>
               <p><strong>Address:</strong> {formData.delivery_address}, {formData.delivery_city}, {formData.delivery_state} - {formData.delivery_pincode}</p>
-              <p><strong>Payment Method:</strong> {formData.payment_method === 'cod' ? 'Cash on Delivery' : 'UPI (Scan & Pay)'}</p>
+              <p><strong>Payment Method:</strong> {formData.payment_method === 'cod' ? 'Cash on Delivery' : 'Online Payment (Razorpay)'}</p>
               <p className="success-total"><strong>Total Paid:</strong> ₹{Math.round(subtotal)}</p>
             </div>
 
