@@ -61,22 +61,25 @@ const migrate = async () => {
     console.log('✔ Created order_items table');
 
     // 4. Ensure admin user exists
-    const adminEmail = 'admin@lumina.com';
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@lumina.com';
+    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+    const adminUsername = process.env.ADMIN_USERNAME || 'admin';
+
     const adminCheck = await pool.query('SELECT * FROM users WHERE LOWER(email) = LOWER($1)', [adminEmail]);
 
     if (adminCheck.rows.length === 0) {
-      console.log('Admin user does not exist. Creating admin@lumina.com...');
+      console.log(`Admin user does not exist. Creating ${adminEmail}...`);
       const salt = await bcrypt.genSalt(10);
-      const passwordHash = await bcrypt.hash('admin123', salt);
+      const passwordHash = await bcrypt.hash(adminPassword, salt);
       await pool.query(
         'INSERT INTO users (username, email, password, is_admin) VALUES ($1, $2, $3, $4)',
-        ['admin', adminEmail, passwordHash, true]
+        [adminUsername, adminEmail, passwordHash, true]
       );
-      console.log('✔ Created admin user admin@lumina.com with password: admin123');
+      console.log(`✔ Created admin user ${adminEmail}`);
     } else {
-      console.log('Admin user already exists. Promoting to admin...');
+      console.log(`Admin user already exists. Promoting ${adminEmail} to admin...`);
       await pool.query('UPDATE users SET is_admin = $1 WHERE LOWER(email) = LOWER($2)', [true, adminEmail]);
-      console.log('✔ Promoted existing admin@lumina.com to admin');
+      console.log(`✔ Promoted existing ${adminEmail} to admin`);
     }
 
     console.log('All migrations completed successfully!');
