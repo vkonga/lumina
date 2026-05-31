@@ -11,6 +11,7 @@ const LoginView = ({ onNavigate }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [localError, setLocalError] = useState('');
+    const [showLocations, setShowLocations] = useState(false);
 
     // Forgot Password state
     const [showForgotModal, setShowForgotModal] = useState(false);
@@ -213,12 +214,40 @@ const LoginView = ({ onNavigate }) => {
                         {isSignUp ? 'SIGN IN TO YOUR ACCOUNT' : 'CREATE ACCOUNT'}
                     </button>
 
-                    <footer className="login-footer">
-                        <a href="#" onClick={(e) => e.preventDefault()}>LOCATIONS</a>
+                    <footer className="login-footer" style={{ marginBottom: showLocations ? '0.75rem' : '0' }}>
+                        <a href="#" onClick={(e) => { e.preventDefault(); setShowLocations(!showLocations); }}>LOCATIONS</a>
                         <a href="#" onClick={(e) => e.preventDefault()}>CAREERS</a>
                         <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('terms'); }}>TERMS</a>
                         <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('privacy'); }}>PRIVACY</a>
                     </footer>
+
+                    {showLocations && (
+                      <div className="locations-dropdown" style={{
+                        background: 'rgba(255, 255, 255, 0.03)',
+                        border: '1px solid rgba(195, 161, 104, 0.2)',
+                        borderRadius: '6px',
+                        padding: '1.25rem 1.5rem',
+                        maxWidth: '320px',
+                        margin: '1rem auto 0',
+                        textAlign: 'center',
+                        backdropFilter: 'blur(8px)',
+                        transition: 'all 0.3s ease',
+                        animation: 'fadeIn 0.3s ease-out'
+                      }}>
+                        <h4 style={{ color: '#c3a168', fontFamily: 'Outfit, sans-serif', fontSize: '0.8rem', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '0.5rem', marginTop: 0 }}>Our Studio Address</h4>
+                        <p style={{ color: '#ccc', fontSize: '0.8rem', lineHeight: '1.5', margin: '0 0 0.75rem 0' }}>
+                          9G2F+V27, Bypass Rd, MP Peta, Tuni, Annavaram Suravaram, Andhra Pradesh 533401
+                        </p>
+                        <a 
+                          href="https://www.google.com/maps/search/?api=1&query=9G2F%2BV27%20Bypass%20Rd%20MP%20Peta%20Tuni%20Andhra%20Pradesh%20533401" 
+                          target="_blank" 
+                          rel="noreferrer"
+                          style={{ color: '#c3a168', fontSize: '0.7rem', fontWeight: '600', textDecoration: 'none', letterSpacing: '0.5px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                        >
+                          Get Directions ↗
+                        </a>
+                      </div>
+                    )}
                 </div>
             </div>
 

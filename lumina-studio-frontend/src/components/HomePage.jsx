@@ -85,6 +85,7 @@ const HomePage = ({ onNavigate, onOpenCart }) => {
   const [activeHero, setActiveHero] = useState(0);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [selectedService, setSelectedService] = useState(null);
+  const [showLocations, setShowLocations] = useState(false);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -374,10 +375,38 @@ const HomePage = ({ onNavigate, onOpenCart }) => {
         </div>
 
         <div className="footer-links-row">
-          <a href="#" onClick={(e) => { e.preventDefault(); }}>Locations</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); setShowLocations(!showLocations); }}>Locations</a>
           <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('terms'); }}>Terms</a>
           <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('privacy'); }}>Privacy</a>
         </div>
+        
+        {showLocations && (
+          <div className="locations-dropdown" style={{
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(195, 161, 104, 0.2)',
+            borderRadius: '6px',
+            padding: '1.25rem 1.5rem',
+            maxWidth: '380px',
+            margin: '1.5rem auto 1.5rem',
+            textAlign: 'center',
+            backdropFilter: 'blur(8px)',
+            transition: 'all 0.3s ease',
+            animation: 'fadeIn 0.3s ease-out'
+          }}>
+            <h4 style={{ color: '#c3a168', fontFamily: 'Outfit, sans-serif', fontSize: '0.85rem', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '0.5rem', marginTop: 0 }}>Our Studio Address</h4>
+            <p style={{ color: '#ccc', fontSize: '0.85rem', lineHeight: '1.5', margin: '0 0 0.75rem 0' }}>
+              9G2F+V27, Bypass Rd, MP Peta, Tuni, Annavaram Suravaram, Andhra Pradesh 533401
+            </p>
+            <a 
+              href="https://www.google.com/maps/search/?api=1&query=9G2F%2BV27%20Bypass%20Rd%20MP%20Peta%20Tuni%20Andhra%20Pradesh%20533401" 
+              target="_blank" 
+              rel="noreferrer"
+              style={{ color: '#c3a168', fontSize: '0.75rem', fontWeight: '600', textDecoration: 'none', letterSpacing: '0.5px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+            >
+              Get Directions ↗
+            </a>
+          </div>
+        )}
 
         <div className="social-icons">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12c0-5.523-4.477-10-10-10z"></path></svg>

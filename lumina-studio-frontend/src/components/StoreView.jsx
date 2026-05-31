@@ -34,6 +34,7 @@ const StoreView = ({ onNavigate, onOpenCart }) => {
   const [activeCategory, setActiveCategory] = useState('All Collections');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [customizerProduct, setCustomizerProduct] = useState(null);
+  const [showLocations, setShowLocations] = useState(false);
   const dispatch = useDispatch();
 
   const { items: products, siteContent, status, error } = useSelector((state) => state.products);
@@ -262,10 +263,38 @@ const StoreView = ({ onNavigate, onOpenCart }) => {
           <span>SD PHOTOGRAPHY</span>
         </div>
         <div className="footer-links">
-          <a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); }}>Locations</a>
+          <a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); setShowLocations(!showLocations); }}>Locations</a>
           <a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); onNavigate('terms'); }}>Terms</a>
           <a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); onNavigate('privacy'); }}>Privacy</a>
         </div>
+        
+        {showLocations && (
+          <div className="locations-dropdown" style={{
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(195, 161, 104, 0.2)',
+            borderRadius: '6px',
+            padding: '1.25rem 1.5rem',
+            maxWidth: '380px',
+            margin: '1.5rem auto 1.5rem',
+            textAlign: 'center',
+            backdropFilter: 'blur(8px)',
+            transition: 'all 0.3s ease',
+            animation: 'fadeIn 0.3s ease-out'
+          }}>
+            <h4 style={{ color: '#c3a168', fontFamily: 'Outfit, sans-serif', fontSize: '0.85rem', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '0.5rem', marginTop: 0 }}>Our Studio Address</h4>
+            <p style={{ color: '#ccc', fontSize: '0.85rem', lineHeight: '1.5', margin: '0 0 0.75rem 0' }}>
+              9G2F+V27, Bypass Rd, MP Peta, Tuni, Annavaram Suravaram, Andhra Pradesh 533401
+            </p>
+            <a 
+              href="https://www.google.com/maps/search/?api=1&query=9G2F%2BV27%20Bypass%20Rd%20MP%20Peta%20Tuni%20Andhra%20Pradesh%20533401" 
+              target="_blank" 
+              rel="noreferrer"
+              style={{ color: '#c3a168', fontSize: '0.75rem', fontWeight: '600', textDecoration: 'none', letterSpacing: '0.5px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+            >
+              Get Directions ↗
+            </a>
+          </div>
+        )}
 
         <div className="footer-contact-info" style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginTop: '1.5rem', marginBottom: '1.5rem' }}>
           {content.contact_email && (
