@@ -395,10 +395,19 @@ const HomePage = ({ onNavigate, onOpenCart }) => {
           }}>
             <h4 style={{ color: '#c3a168', fontFamily: 'Outfit, sans-serif', fontSize: '0.85rem', letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: '0.5rem', marginTop: 0 }}>Our Studio Address</h4>
             <p style={{ color: '#ccc', fontSize: '0.85rem', lineHeight: '1.5', margin: '0 0 0.75rem 0' }}>
-              9G2F+V27, Bypass Rd, MP Peta, Tuni, Annavaram Suravaram, Andhra Pradesh 533401
+              <a 
+                href="https://maps.app.goo.gl/NZgWFq66GPUj4uae9?g_st=iw" 
+                target="_blank" 
+                rel="noreferrer"
+                style={{ color: '#ccc', textDecoration: 'none', transition: 'color 0.2s' }}
+                onMouseEnter={(e) => e.target.style.color = '#c3a168'}
+                onMouseLeave={(e) => e.target.style.color = '#ccc'}
+              >
+                9G2F+V27, Bypass Rd, MP Peta, Tuni, Annavaram Suravaram, Andhra Pradesh 533401
+              </a>
             </p>
             <a 
-              href="https://www.google.com/maps/search/?api=1&query=9G2F%2BV27%20Bypass%20Rd%20MP%20Peta%20Tuni%20Andhra%20Pradesh%20533401" 
+              href="https://maps.app.goo.gl/NZgWFq66GPUj4uae9?g_st=iw" 
               target="_blank" 
               rel="noreferrer"
               style={{ color: '#c3a168', fontSize: '0.75rem', fontWeight: '600', textDecoration: 'none', letterSpacing: '0.5px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
