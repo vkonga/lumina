@@ -6,7 +6,7 @@ const getHeroData = async () => {
 };
 
 const getServicesData = async () => {
-  const result = await pool.query('SELECT id, title, img FROM services ORDER BY id ASC');
+  const result = await pool.query('SELECT id, title, img, price, reference_images FROM services ORDER BY id ASC');
   return result.rows;
 };
 

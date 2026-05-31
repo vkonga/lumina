@@ -36,7 +36,7 @@ const testimonials = [
     location: "TUNI, ANDHRA PRADESH"
   },
   {
-    quote: "Their cinematography and live streaming allowed our families across the globe to feel like they were sitting in the mandap with us. Exquisite service and quality.",
+    quote: "Their cinematography and maternity captures allowed our families across the globe to feel every intimate emotion. Exquisite service and quality.",
     author: "RAMYA & PRASAD",
     location: "TUNI, ANDHRA PRADESH"
   }
@@ -54,9 +54,9 @@ const serviceDetails = {
     quote: "Where your love story becomes cinema."
   },
   '03': {
-    description: "Seamless, multi-cam live broadcast of your ceremonies in crystal-clear ultra-high-definition, allowing families and guests across the globe to feel like they are sitting right in the mandap.",
-    inclusions: "Private UHD broadcast stream, interactive digital guestbook, live chat integration, multi-camera angle coverage, dedicated network engineer.",
-    quote: "Connecting hearts across oceans."
+    description: "Capturing the beautiful, glowing journey of motherhood with cinematic elegance and delicate grace. Timeless portraits celebrating new life in a luxurious fine-art environment.",
+    inclusions: "Bespoke studio/outdoor session, luxury pregnancy gowns wardrobe, fine-art digital gallery, 20 high-end masterfully retouched archival prints.",
+    quote: "Celebrating the sacred miracle of motherhood."
   },
   '04': {
     description: "A breathtaking cinematic shoot set in iconic heritage palaces, tranquil lakes, or sand dunes. Designed to capture your chemistry and tell your romantic prelude story before the grand festivities begin.",
@@ -64,9 +64,9 @@ const serviceDetails = {
     quote: "The elegant prelude to your forever."
   },
   '05': {
-    description: "A quiet, romantic shoot following your grand wedding day. Unhurried, serene, and focusing entirely on your early days of married bliss away from the bustling crowds.",
-    inclusions: "Serene post-wedding digital album, 30 fine-art prints, post-ceremony lifestyle film snippet.",
-    quote: "In the quiet chapters after the vows."
+    description: "Preserving the whimsical charm, spontaneous laughter, and innocent glances of your little ones. Custom-themed interactive studio sessions that make memories last forever.",
+    inclusions: "Creative thematic backdrops, interactive child-friendly team, dynamic digital proofs showcase, custom heirloom keepsake album.",
+    quote: "Capturing childhood's pure, fleeting magic."
   },
   '06': {
     description: "Documenting every sacred custom, ritual, and family portrait with strict adherence to authentic traditional framing. Ideal for haldi, mehndi, sangeet, and grand reception group portraits.",
@@ -74,9 +74,9 @@ const serviceDetails = {
     quote: "Honoring heritage, celebrating legacy."
   },
   '07': {
-    description: "A state-of-the-art interactive 360-degree slow-motion video setup that serves as the ultimate high-end entertainment and keepsake for your guests during the sangeet and reception.",
-    inclusions: "Unlimited 360 slow-mo captures, instant QR code downloads for guests, custom luxury studio backdrop, dedicated booth director.",
-    quote: "Interactive artistry in full circle."
+    description: "High-end editorial fashion photography featuring ultra-modern creative lighting, avant-garde framing, and professional portfolio-level art direction.",
+    inclusions: "Studio/on-location shoot, multi-look creative styling, professional model portfolio lookbook, masterfully color-graded high-res digital frames.",
+    quote: "Transforming vision into high-fashion art."
   }
 };
 
@@ -86,6 +86,7 @@ const HomePage = ({ onNavigate, onOpenCart }) => {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const [selectedService, setSelectedService] = useState(null);
   const [showLocations, setShowLocations] = useState(false);
+  const [lightboxImg, setLightboxImg] = useState(null);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -469,10 +470,26 @@ const HomePage = ({ onNavigate, onOpenCart }) => {
               </div>
               <p className="service-modal-desc">{selectedService.description}</p>
               <div className="service-modal-quote">"{selectedService.quote}"</div>
+              
               <div className="service-modal-inclusions">
                 <span className="inclusions-title">Luxury Inclusions & Deliverables</span>
                 <p className="inclusions-text">{selectedService.inclusions}</p>
               </div>
+
+              {/* Reference Images Gallery Showcase */}
+              {selectedService.reference_images && selectedService.reference_images.split(',').map(x => x.trim()).filter(Boolean).length > 0 && (
+                <div className="service-modal-reference-gallery">
+                  <span className="reference-gallery-title">Reference Showcase</span>
+                  <div className="reference-gallery-grid">
+                    {selectedService.reference_images.split(',').map(x => x.trim()).filter(Boolean).map((imgUrl, i) => (
+                      <div key={i} className="reference-gallery-item" onClick={() => setLightboxImg(imgUrl)}>
+                        <img src={imgUrl} alt={`${selectedService.title} Reference ${i + 1}`} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <button 
                 className="btn-service-inquire"
                 onClick={() => {
@@ -486,6 +503,16 @@ const HomePage = ({ onNavigate, onOpenCart }) => {
           </div>
         )}
       </div>
+
+      {/* Lightbox Modal */}
+      {lightboxImg && (
+        <div className="lightbox-modal-overlay open" onClick={() => setLightboxImg(null)}>
+          <button className="lightbox-close-btn" onClick={() => setLightboxImg(null)} aria-label="Close image showcase">
+            &times;
+          </button>
+          <img src={lightboxImg} alt="Reference Full View" className="lightbox-image" onClick={(e) => e.stopPropagation()} />
+        </div>
+      )}
     </div>
   );
 };

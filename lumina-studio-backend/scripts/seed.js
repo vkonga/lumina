@@ -20,7 +20,9 @@ const seedData = async () => {
       CREATE TABLE IF NOT EXISTS services (
         id VARCHAR(10) PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
-        img TEXT
+        img TEXT,
+        price DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+        reference_images TEXT
       );
 
       CREATE TABLE IF NOT EXISTS gallery (
@@ -110,18 +112,60 @@ const seedData = async () => {
 
     // Services
     const services = [
-      { id: '01', title: 'Candid Photography', img: 'https://images.unsplash.com/photo-1607190074257-dd4b7af0309f?q=80&w=1000&auto=format&fit=crop' },
-      { id: '02', title: 'Videography', img: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=1000&auto=format&fit=crop' },
-      { id: '03', title: 'Live Streaming', img: 'https://images.unsplash.com/photo-1519225495810-7512c696505a?q=80&w=1000&auto=format&fit=crop' },
-      { id: '04', title: 'Pre-Wedding', img: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1000&auto=format&fit=crop' },
-      { id: '05', title: 'Post-Wedding', img: 'https://images.unsplash.com/photo-1621184455862-c163dfb30e0f?q=80&w=1000&auto=format&fit=crop' },
-      { id: '06', title: 'Traditional Shoots', img: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=1000&auto=format&fit=crop' },
-      { id: '07', title: '360 Camera Setup', img: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1000&auto=format&fit=crop' }
+      { 
+        id: '01', 
+        title: 'Candid Photography', 
+        img: 'https://images.unsplash.com/photo-1607190074257-dd4b7af0309f?q=80&w=1000&auto=format&fit=crop',
+        price: 75000.00,
+        reference_images: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop,https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1000&auto=format&fit=crop,https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=1000&auto=format&fit=crop'
+      },
+      { 
+        id: '02', 
+        title: 'Videography', 
+        img: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=1000&auto=format&fit=crop',
+        price: 95000.00,
+        reference_images: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1000&auto=format&fit=crop,https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1000&auto=format&fit=crop,https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=1000&auto=format&fit=crop'
+      },
+      { 
+        id: '03', 
+        title: 'Maternity Shoot', 
+        img: 'https://images.unsplash.com/photo-1590156546746-c588a113f6f3?q=80&w=1000&auto=format&fit=crop',
+        price: 45000.00,
+        reference_images: 'https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=1000&auto=format&fit=crop,https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=1000&auto=format&fit=crop,https://images.unsplash.com/photo-1590156546746-c588a113f6f3?q=80&w=1000&auto=format&fit=crop'
+      },
+      { 
+        id: '04', 
+        title: 'Pre-Wedding', 
+        img: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1000&auto=format&fit=crop',
+        price: 60000.00,
+        reference_images: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1000&auto=format&fit=crop,https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=1000&auto=format&fit=crop,https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop'
+      },
+      { 
+        id: '05', 
+        title: 'Kids Shoot', 
+        img: 'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?q=80&w=1000&auto=format&fit=crop',
+        price: 35000.00,
+        reference_images: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=1000&auto=format&fit=crop,https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?q=80&w=1000&auto=format&fit=crop,https://images.unsplash.com/photo-1519817650390-64a93db51149?q=80&w=1000&auto=format&fit=crop'
+      },
+      { 
+        id: '06', 
+        title: 'Traditional Shoots', 
+        img: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=1000&auto=format&fit=crop',
+        price: 50000.00,
+        reference_images: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=1000&auto=format&fit=crop,https://images.unsplash.com/photo-1621184455862-c163dfb30e0f?q=80&w=1000&auto=format&fit=crop,https://images.unsplash.com/photo-1607190074257-dd4b7af0309f?q=80&w=1000&auto=format&fit=crop'
+      },
+      { 
+        id: '07', 
+        title: 'Fashion Shoots', 
+        img: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1000&auto=format&fit=crop',
+        price: 80000.00,
+        reference_images: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1000&auto=format&fit=crop,https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=1000&auto=format&fit=crop,https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=1000&auto=format&fit=crop'
+      }
     ];
     for (const service of services) {
       await pool.query(
-        `INSERT INTO services (id, title, img) VALUES ($1, $2, $3)`,
-        [service.id, service.title, service.img]
+        `INSERT INTO services (id, title, img, price, reference_images) VALUES ($1, $2, $3, $4, $5)`,
+        [service.id, service.title, service.img, service.price, service.reference_images]
       );
     }
 

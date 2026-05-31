@@ -169,7 +169,7 @@ const updateProduct = async (req, res, next) => {
  */
 const getServices = async (req, res, next) => {
   try {
-    const result = await pool.query('SELECT id, title, img, price FROM services ORDER BY id ASC');
+    const result = await pool.query('SELECT id, title, img, price, reference_images FROM services ORDER BY id ASC');
     res.status(200).json(result.rows);
   } catch (error) {
     next(error);
@@ -182,7 +182,7 @@ const getServices = async (req, res, next) => {
 const updateService = async (req, res, next) => {
   try {
     const serviceId = req.params.id;
-    const { title, img, price } = req.body;
+    const { title, img, price, reference_images } = req.body;
 
     if (!title) {
       return res.status(400).json({ error: 'Service title is required.' });
@@ -192,10 +192,10 @@ const updateService = async (req, res, next) => {
 
     const result = await pool.query(
       `UPDATE services 
-       SET title = $1, img = $2, price = $3 
-       WHERE id = $4 
+       SET title = $1, img = $2, price = $3, reference_images = $4 
+       WHERE id = $5 
        RETURNING *`,
-      [title, img || '', servicePrice, serviceId]
+      [title, img || '', servicePrice, reference_images || '', serviceId]
     );
 
     if (result.rows.length === 0) {
