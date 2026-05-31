@@ -173,7 +173,7 @@ const StoreView = ({ onNavigate, onOpenCart }) => {
             <span className="title-collection">{content.store_collection}</span>
           </h1>
           <p className="store-banner-desc">
-            {content.store_description}
+            {content.store_description?.replace(/Lumina's/gi, "SD Photography's").replace(/Lumina Studios/gi, "SD Photography").replace(/Lumina Studio/gi, "SD Photography")}
           </p>
         </div>
       </div>

@@ -27,18 +27,18 @@ const heroSlides = [
 const testimonials = [
   {
     quote: "SD Photography didn't just take photos, they captured the soul of our wedding. Every frame feels like a still from a high-end cinematic masterpiece. Truly unparalleled artistry.",
-    author: "PRIYA & ANKIT",
-    location: "NEW DELHI, INDIA"
+    author: "SAI & HARIKA",
+    location: "TUNI, ANDHRA PRADESH"
   },
   {
     quote: "The candid team was invisible yet captured every tear, laugh, and emotional glance. Our family looks like royalty. Absolutely worth every single rupee.",
-    author: "MEERA & KABIR",
-    location: "MUMBAI, INDIA"
+    author: "MADHU & SRINIVAS",
+    location: "TUNI, ANDHRA PRADESH"
   },
   {
     quote: "Their cinematography and live streaming allowed our families across the globe to feel like they were sitting in the mandap with us. Exquisite service and quality.",
-    author: "ADITI & ROHAN",
-    location: "BANGALORE, INDIA"
+    author: "RAMYA & PRASAD",
+    location: "TUNI, ANDHRA PRADESH"
   }
 ];
 

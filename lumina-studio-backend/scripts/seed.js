@@ -146,8 +146,8 @@ const seedData = async () => {
       `INSERT INTO testimonial (quote, author, location) VALUES ($1, $2, $3)`,
       [
         "SD Photography didn't just take photos, they captured the soul of our wedding. Every frame feels like a still from a high-end cinematic masterpiece. Truly unparalleled artistry.",
-        'PRIYA & ANKIT',
-        'NEW DELHI, INDIA'
+        'SAI & HARIKA',
+        'TUNI, ANDHRA PRADESH'
       ]
     );
 
