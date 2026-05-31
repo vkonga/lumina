@@ -79,4 +79,6 @@ jobs:
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}
             GCS_BUCKET_NAME=${{ secrets.GCS_BUCKET_NAME }}
+            RAZORPAY_KEY_ID=${{ secrets.RAZORPAY_KEY_ID }}
+            RAZORPAY_KEY_SECRET=${{ secrets.RAZORPAY_KEY_SECRET }}
 
