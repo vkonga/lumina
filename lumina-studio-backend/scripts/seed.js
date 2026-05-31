@@ -145,7 +145,7 @@ const seedData = async () => {
     await pool.query(
       `INSERT INTO testimonial (quote, author, location) VALUES ($1, $2, $3)`,
       [
-        "Lumina Studios didn't just take photos, they captured the soul of our wedding. Every frame feels like a still from a high-end cinematic masterpiece. Truly unparalleled artistry.",
+        "SD Photography didn't just take photos, they captured the soul of our wedding. Every frame feels like a still from a high-end cinematic masterpiece. Truly unparalleled artistry.",
         'PRIYA & ANKIT',
         'NEW DELHI, INDIA'
       ]
@@ -249,7 +249,7 @@ const seedData = async () => {
       { key: 'gallery_description', value: 'Every frame is a perfect memory, every shot a masterpiece of storytelling. Explore our recent elite captures.' },
       { key: 'store_title', value: 'The Boutique' },
       { key: 'store_collection', value: 'Collection' },
-      { key: 'store_description', value: "Exquisite archival frames, limited edition gift articles, and bespoke apparel designed for the modern visual storyteller. Curated with Lumina's signature aesthetic." },
+      { key: 'store_description', value: "Exquisite archival frames, limited edition gift articles, and bespoke apparel designed for the modern visual storyteller. Curated with SD Photography's signature aesthetic." },
       { key: 'newsletter_title', value: 'Exclusive Access' },
       { key: 'newsletter_description', value: 'Subscribe to receive first-look access to limited edition archival prints and new boutique collections.' },
       { key: 'login_title', value: 'Welcome Back' },

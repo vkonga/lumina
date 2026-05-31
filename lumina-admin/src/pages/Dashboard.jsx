@@ -51,7 +51,7 @@ const Dashboard = () => {
       <header className="admin-page-header">
         <div>
           <h1>Dashboard Overview</h1>
-          <p className="subtitle">Welcome to the Lumina Studios administrative control panel.</p>
+          <p className="subtitle">Welcome to the SD Photography administrative control panel.</p>
         </div>
       </header>
 
@@ -144,11 +144,11 @@ const Dashboard = () => {
                   <tr key={order.id}>
                     <td>
                       <Link to={`/orders/${order.id}`} className="table-order-id">
-                        #LUM-{order.id}
+                        #SDP-{order.id}
                       </Link>
                     </td>
                     <td><strong>{order.delivery_name}</strong></td>
-                    <td className="table-email">{order.email || 'guest@lumina.com'}</td>
+                    <td className="table-email">{order.email || 'guest@sdphotography.in'}</td>
                     <td>{new Date(order.created_at).toLocaleDateString('en-IN', {
                       day: 'numeric',
                       month: 'short',

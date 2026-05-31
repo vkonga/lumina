@@ -99,7 +99,7 @@ const OrderDetail = () => {
         <div>
           <Link to="/orders" className="back-nav-link">← Back to Orders</Link>
           <div className="title-row">
-            <h1>Order #LUM-{order.id}</h1>
+            <h1>Order #SDP-{order.id}</h1>
             <div className="badge-row">
               <span className={`status-badge order ${order.status}`}>{order.status}</span>
               <span className={`status-badge payment ${order.payment_status}`}>{order.payment_status}</span>
@@ -340,7 +340,7 @@ const OrderDetail = () => {
 
             <div className="info-block">
               <span>Registered Email</span>
-              <strong>{order.email || 'guest@lumina.com'}</strong>
+              <strong>{order.email || 'guest@sdphotography.in'}</strong>
             </div>
 
             {order.user_id && (

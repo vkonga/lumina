@@ -58,7 +58,7 @@ const Login = () => {
     <div className="admin-login-overlay">
       <div className="login-box">
         <div className="login-logo">
-          <h1>Lumina</h1>
+          <h1>SD</h1>
           <span>ADMIN DASHBOARD</span>
         </div>
 
@@ -71,7 +71,7 @@ const Login = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="e.g. admin@lumina.com"
+              placeholder="e.g. admin@sdphotography.in"
               required
             />
           </div>
@@ -93,8 +93,8 @@ const Login = () => {
         </form>
 
         <div className="login-help-text">
-          <p>Lumina Studios Administrative Access Console.</p>
-          <p className="hint">Default credential is admin@lumina.com / admin123</p>
+          <p>SD Photography Administrative Access Console.</p>
+          <p className="hint">Default credential is admin@sdphotography.in / admin123</p>
         </div>
       </div>
     </div>

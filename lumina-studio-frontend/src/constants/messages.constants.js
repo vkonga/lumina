@@ -22,7 +22,7 @@ export const ERROR_MESSAGES = {
 
 /** @type {Object.<string, string>} */
 export const SUCCESS_MESSAGES = {
-    LOGIN_SUCCESS: 'Welcome back to Lumina Studios.',
+    LOGIN_SUCCESS: 'Welcome back to SD Photography.',
     NEWSLETTER_SUBSCRIBED: 'You have joined the circle. Welcome.',
     BOOKING_CONFIRMED: 'Your booking has been confirmed.',
     PROFILE_UPDATED: 'Your profile has been updated successfully.',

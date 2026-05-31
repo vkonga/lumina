@@ -109,7 +109,7 @@ const UserDetail = () => {
                         <tr key={order.id}>
                           <td>
                             <Link to={`/orders/${order.id}`} className="table-order-id">
-                              #LUM-{order.id}
+                              #SDP-{order.id}
                             </Link>
                           </td>
                           <td>{new Date(order.created_at).toLocaleDateString('en-IN', {

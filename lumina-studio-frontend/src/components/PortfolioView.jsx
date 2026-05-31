@@ -171,6 +171,12 @@ const PortfolioView = ({ onNavigate, onOpenCart }) => {
           <img src={logoImg} alt="SD Photography" style={{ width: '42px', height: '42px', borderRadius: '50%', border: '1.2px solid #c3a168', backgroundColor: '#000', objectFit: 'contain' }} />
           <span>SD PHOTOGRAPHY</span>
         </div>
+        
+        <div className="footer-links-row" style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '1.5rem', marginTop: '1rem' }}>
+          <a href="#" className="footer-link" style={{ color: '#888', textDecoration: 'none', fontSize: '0.85rem' }} onClick={(e) => { e.preventDefault(); }}>Locations</a>
+          <a href="#" className="footer-link" style={{ color: '#888', textDecoration: 'none', fontSize: '0.85rem' }} onClick={(e) => { e.preventDefault(); onNavigate('terms'); }}>Terms</a>
+          <a href="#" className="footer-link" style={{ color: '#888', textDecoration: 'none', fontSize: '0.85rem' }} onClick={(e) => { e.preventDefault(); onNavigate('privacy'); }}>Privacy</a>
+        </div>
         <div className="footer-contact-info" style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
           {siteContent?.contact_email && (
             <a href={`mailto:${siteContent.contact_email}`} className="footer-contact-link" style={{ textTransform: 'lowercase', color: 'var(--lumina-white)', textDecoration: 'none', fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center' }}>

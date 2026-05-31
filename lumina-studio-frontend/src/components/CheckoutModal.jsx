@@ -114,8 +114,8 @@ const CheckoutModal = ({ isOpen, onClose, cartItems, subtotal }) => {
           key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_dummykeyid123',
           amount: rzpConfig.amount,
           currency: rzpConfig.currency,
-          name: 'Lumina Studios',
-          description: `Order Payment #LUM-${orderData.id}`,
+          name: 'SD Photography',
+          description: `Order Payment #SDP-${orderData.id}`,
           order_id: rzpConfig.id,
           handler: async function (paymentResponse) {
             setLoading(true);
@@ -444,8 +444,8 @@ const CheckoutModal = ({ isOpen, onClose, cartItems, subtotal }) => {
             </div>
 
             <h2>Order Placed Successfully!</h2>
-            <p className="success-order-id">Order ID: <strong>#LUM-{orderId}</strong></p>
-            <p className="success-subtext">Thank you for shopping with Lumina Studios. Your order has been registered and is currently pending admin confirmation.</p>
+            <p className="success-order-id">Order ID: <strong>#SDP-{orderId}</strong></p>
+            <p className="success-subtext">Thank you for shopping with SD Photography. Your order has been registered and is currently pending admin confirmation.</p>
 
             <div className="success-details-summary">
               <h3>Delivery Details</h3>

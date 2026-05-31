@@ -262,9 +262,9 @@ const StoreView = ({ onNavigate, onOpenCart }) => {
           <span>SD PHOTOGRAPHY</span>
         </div>
         <div className="footer-links">
-          <a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); onNavigate('home'); }}>Locations</a>
-          <a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); onNavigate('home'); }}>Terms</a>
-          <a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); onNavigate('home'); }}>Privacy</a>
+          <a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); }}>Locations</a>
+          <a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); onNavigate('terms'); }}>Terms</a>
+          <a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); onNavigate('privacy'); }}>Privacy</a>
         </div>
 
         <div className="footer-contact-info" style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginTop: '1.5rem', marginBottom: '1.5rem' }}>
@@ -287,7 +287,7 @@ const StoreView = ({ onNavigate, onOpenCart }) => {
           )}
         </div>
 
-        <p className="copyright">© 2026 LUMINA STUDIOS. THE ART OF VISUAL STORYTELLING.</p>
+        <p className="copyright">© 2026 SD PHOTOGRAPHY. THE ART OF VISUAL STORYTELLING.</p>
       </footer>
     </div>
   );

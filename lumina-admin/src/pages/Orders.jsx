@@ -145,11 +145,11 @@ const Orders = () => {
                     <tr key={order.id}>
                       <td>
                         <Link to={`/orders/${order.id}`} className="table-order-id">
-                          #LUM-{order.id}
+                          #SDP-{order.id}
                         </Link>
                       </td>
                       <td><strong>{order.delivery_name}</strong></td>
-                      <td className="table-email">{order.email || 'customer@lumina.com'}</td>
+                      <td className="table-email">{order.email || 'customer@sdphotography.in'}</td>
                       <td>{new Date(order.created_at).toLocaleDateString('en-IN', {
                         day: 'numeric',
                         month: 'short',

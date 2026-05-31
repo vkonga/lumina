@@ -127,7 +127,7 @@ export const BUTTON_LABELS = {
  */
 export const FORM_LABELS = {
     EMAIL_LABEL: 'Email Address',
-    EMAIL_PLACEHOLDER: 'name@lumina.studio',
+    EMAIL_PLACEHOLDER: 'name@sd.photography',
     PASSWORD_LABEL: 'Password',
     PASSWORD_PLACEHOLDER: '••••••••',
     NEWSLETTER_PLACEHOLDER: 'Your email address',
@@ -160,7 +160,7 @@ export const ERROR_MESSAGES = {
  * @type {Object.<string, string>}
  */
 export const SUCCESS_MESSAGES = {
-    LOGIN_SUCCESS: 'Welcome back to Lumina Studios.',
+    LOGIN_SUCCESS: 'Welcome back to SD Photography.',
     NEWSLETTER_SUBSCRIBED: 'You have joined the circle. Welcome.',
     BOOKING_CONFIRMED: 'Your booking has been confirmed.',
     PROFILE_UPDATED: 'Your profile has been updated successfully.',

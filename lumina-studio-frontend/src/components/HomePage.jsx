@@ -26,7 +26,7 @@ const heroSlides = [
 
 const testimonials = [
   {
-    quote: "Lumina Studios didn't just take photos, they captured the soul of our wedding. Every frame feels like a still from a high-end cinematic masterpiece. Truly unparalleled artistry.",
+    quote: "SD Photography didn't just take photos, they captured the soul of our wedding. Every frame feels like a still from a high-end cinematic masterpiece. Truly unparalleled artistry.",
     author: "PRIYA & ANKIT",
     location: "NEW DELHI, INDIA"
   },
@@ -374,9 +374,9 @@ const HomePage = ({ onNavigate, onOpenCart }) => {
         </div>
 
         <div className="footer-links-row">
-          <a href="#">Locations</a>
-          <a href="#">Terms</a>
-          <a href="#">Privacy</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); }}>Locations</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('terms'); }}>Terms</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('privacy'); }}>Privacy</a>
         </div>
 
         <div className="social-icons">
@@ -406,7 +406,7 @@ const HomePage = ({ onNavigate, onOpenCart }) => {
         </div>
 
         <div className="footer-copyright">
-          © 2026 LUMINA STUDIOS. THE ART OF VISUAL STORYTELLING.
+          © 2026 SD PHOTOGRAPHY. THE ART OF VISUAL STORYTELLING.
         </div>
       </footer>
 

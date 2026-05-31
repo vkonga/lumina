@@ -8,6 +8,8 @@ import CartDrawer from './components/CartDrawer';
 import { initializeAuth, logout } from './store/authSlice';
 import { fetchCart, resetCart } from './store/cartSlice';
 import { getMe } from './api/auth.api';
+import PrivacyView from './components/PrivacyView';
+import TermsView from './components/TermsView';
 import './App.css';
 
 function App() {
@@ -75,6 +77,10 @@ function App() {
         return <PortfolioView onNavigate={setCurrentView} onOpenCart={() => setCartOpen(true)} />;
       case 'login':
         return <LoginView onNavigate={setCurrentView} />;
+      case 'terms':
+        return <TermsView onNavigate={setCurrentView} />;
+      case 'privacy':
+        return <PrivacyView onNavigate={setCurrentView} />;
       default:
         return <HomePage onNavigate={setCurrentView} onOpenCart={() => setCartOpen(true)} />;
     }
