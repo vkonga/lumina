@@ -206,8 +206,8 @@ const PortfolioVideos = () => {
                       
                       <div style={{ display: 'flex', gap: '10px' }}>
                         <button 
-                          className="table-action-btn" 
-                          style={{ flex: '1', textAlign: 'center', borderColor: 'rgba(220, 53, 69, 0.3)', color: '#ff6b6b' }}
+                          className="table-action-btn danger" 
+                          style={{ flex: '1', textAlign: 'center' }}
                           onClick={() => handleDeleteVideo(video.id)}
                         >
                           Delete Video

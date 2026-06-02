@@ -174,7 +174,7 @@ const Products = () => {
 
             <form onSubmit={handleFormSubmit} className="checkout-form" style={{ padding: '20px 25px' }}>
               <div className="checkout-form-grid" style={{ gap: '15px', marginBottom: '20px' }}>
-                <div className="form-group full-width">
+                <div className="form-group">
                   <label>Product Title</label>
                   <input
                     type="text"
@@ -185,7 +185,7 @@ const Products = () => {
                   />
                 </div>
 
-                <div className="form-group" style={{ gridColumn: 'span 3' }}>
+                <div className="form-group half-width">
                   <label>Base Price (₹)</label>
                   <input
                     type="number"
@@ -196,13 +196,12 @@ const Products = () => {
                   />
                 </div>
 
-                <div className="form-group" style={{ gridColumn: 'span 3' }}>
+                <div className="form-group half-width">
                   <label>Category Group</label>
                   <select
                     name="category"
                     value={editForm.category}
                     onChange={handleInputChange}
-                    style={{ background: '#151515', color: '#fff', border: '1px solid #222', padding: '12px 16px', borderRadius: '6px', fontSize: '0.95rem' }}
                   >
                     <option value="frames">Photo Frames</option>
                     <option value="tshirts">Custom T-Shirts</option>
@@ -210,7 +209,7 @@ const Products = () => {
                   </select>
                 </div>
 
-                <div className="form-group full-width">
+                <div className="form-group">
                   <label>Description</label>
                   <textarea
                     name="description"

@@ -201,7 +201,7 @@ const Services = () => {
 
             <form onSubmit={handleFormSubmit} className="checkout-form" style={{ padding: '20px 25px' }}>
               <div className="checkout-form-grid" style={{ gap: '15px', marginBottom: '20px' }}>
-                <div className="form-group full-width">
+                <div className="form-group half-width">
                   <label>Service Title</label>
                   <input
                     type="text"
@@ -212,7 +212,7 @@ const Services = () => {
                   />
                 </div>
 
-                <div className="form-group full-width">
+                <div className="form-group half-width">
                   <label>Base Package Price (₹)</label>
                   <input
                     type="number"
@@ -277,7 +277,7 @@ const Services = () => {
                   </div>
 
                   {/* Upload File and Manual Link inputs */}
-                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                  <div className="ref-upload-row">
                     <label style={{
                       backgroundColor: '#161616',
                       border: '1px dashed rgba(195, 161, 104, 0.4)',
@@ -302,19 +302,18 @@ const Services = () => {
                       />
                     </label>
 
-                    <div style={{ display: 'flex', flex: '2', gap: '6px' }}>
+                    <div className="ref-url-wrapper">
                       <input
                         type="url"
                         placeholder="Or paste image URL..."
                         value={manualUrl}
                         onChange={(e) => setManualUrl(e.target.value)}
-                        style={{ flex: '1', fontSize: '0.85rem', padding: '10px', background: '#121212', border: '1px solid #222', color: '#fff', borderRadius: '6px' }}
+                        className="ref-url-input"
                       />
                       <button
                         type="button"
                         onClick={handleAddManualUrl}
-                        className="btn-primary"
-                        style={{ padding: '0 12px', fontSize: '0.85rem', height: '38px', whiteSpace: 'nowrap' }}
+                        className="btn-primary ref-url-btn"
                       >
                         Add URL
                       </button>
