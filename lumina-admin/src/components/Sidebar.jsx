@@ -14,7 +14,7 @@ const Sidebar = () => {
 
   return (
     <aside className="admin-sidebar">
-      <div className="sidebar-brand" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '12px', padding: '20px 25px', borderBottom: '1px solid #161616' }}>
+      <div className="sidebar-brand" style={{ cursor: 'pointer', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '12px', padding: '20px 25px', borderBottom: '1px solid #161616' }} onClick={() => navigate('/')}>
         <img src={logoImg} alt="SD Photography" style={{ width: '42px', height: '42px', borderRadius: '50%', border: '1.5px solid #c3a168', backgroundColor: '#000', objectFit: 'contain' }} />
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <h2 style={{ fontSize: '1.25rem', fontFamily: 'Outfit, sans-serif', fontWeight: '800', color: '#fff', letterSpacing: '0.5px', margin: 0 }}>SD Photography</h2>

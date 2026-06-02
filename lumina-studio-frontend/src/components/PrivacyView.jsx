@@ -108,7 +108,7 @@ const PrivacyView = ({ onNavigate }) => {
 
       {/* Footer */}
       <footer className="home-footer" style={{ borderTop: '1px solid rgba(195,161,104,0.1)', background: '#050505', padding: '4rem 2rem 2rem' }}>
-        <div className="footer-logo-large" style={{ display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center' }}>
+        <div className="footer-logo-large" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', justifyContent: 'center' }} onClick={() => onNavigate('home')}>
           <img src={logoImg} alt="SD Photography" style={{ width: '42px', height: '42px', borderRadius: '50%', border: '1.2px solid #c3a168', backgroundColor: '#000', objectFit: 'contain' }} />
           <span>SD PHOTOGRAPHY</span>
         </div>
