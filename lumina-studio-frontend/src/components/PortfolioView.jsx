@@ -127,7 +127,9 @@ const PortfolioView = ({ onNavigate, onOpenCart }) => {
           <a href="#" className="mobile-nav-link" onClick={(e) => { e.preventDefault(); onNavigate('home'); setMobileMenuOpen(false); }}>Services</a>
           <a href="#" className="mobile-nav-link" onClick={(e) => { e.preventDefault(); onNavigate('store'); setMobileMenuOpen(false); }}>Store</a>
           <a href="#" className="mobile-nav-link" onClick={(e) => { e.preventDefault(); onNavigate('home'); setMobileMenuOpen(false); }}>Contact</a>
-          {isAuthenticated && (
+          {!isAuthenticated ? (
+            <a href="#" className="mobile-nav-link" style={{ color: '#c3a168', marginTop: '1rem' }} onClick={(e) => { e.preventDefault(); onNavigate('login'); setMobileMenuOpen(false); }}>Sign In</a>
+          ) : (
             <a href="#" className="mobile-nav-link" style={{ color: '#ff6b6b', marginTop: '1rem' }} onClick={(e) => { e.preventDefault(); handleLogout(); setMobileMenuOpen(false); }}>Sign Out</a>
           )}
         </div>

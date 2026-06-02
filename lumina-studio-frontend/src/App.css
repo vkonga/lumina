@@ -589,13 +589,40 @@ input::placeholder {
 
 @media (max-width: 768px) {
   .navbar {
-    padding: 1rem 1.5rem !important; /* Responsive padding on mobile viewports */
+    padding: 0.85rem 1.25rem !important; /* Compact premium mobile padding */
+  }
+  
+  .navbar .logo-serif {
+    font-size: 1.15rem !important; /* Scaled down logo text on tablets/mobiles */
+    letter-spacing: 0.1em !important;
+  }
+  
+  .navbar .logo-serif img {
+    width: 32px !important; /* Scaled down logo image */
+    height: 32px !important;
+  }
+  
+  .navbar .btn-outline {
+    display: none !important; /* Hide Sign In/Out from mobile header to prevent clutter */
   }
   
   .terms-page-view, .privacy-page-view {
     padding-top: 70px !important;
   }
 }
+
+@media (max-width: 480px) {
+  .navbar .logo-serif {
+    font-size: 0.95rem !important; /* Scaled down even further for narrow viewports */
+    letter-spacing: 0.08em !important;
+  }
+  
+  .navbar .logo-serif img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+}
+
 
 
 

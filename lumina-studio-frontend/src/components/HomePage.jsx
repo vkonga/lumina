@@ -227,7 +227,9 @@ const HomePage = ({ onNavigate, onOpenCart }) => {
           <a href="#services" className="mobile-nav-link" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); const el = document.getElementById('services'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}>Services</a>
           <a href="#" className="mobile-nav-link" onClick={(e) => { e.preventDefault(); onNavigate('store'); setMobileMenuOpen(false); }}>Store</a>
           <a href="#contact" className="mobile-nav-link" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); const el = document.getElementById('contact'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}>Contact</a>
-          {isAuthenticated && (
+          {!isAuthenticated ? (
+            <a href="#" className="mobile-nav-link" style={{ color: '#c3a168', marginTop: '1rem' }} onClick={(e) => { e.preventDefault(); onNavigate('login'); setMobileMenuOpen(false); }}>Sign In</a>
+          ) : (
             <a href="#" className="mobile-nav-link" style={{ color: '#ff6b6b', marginTop: '1rem' }} onClick={(e) => { e.preventDefault(); handleLogout(); setMobileMenuOpen(false); }}>Sign Out</a>
           )}
         </div>
