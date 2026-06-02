@@ -447,7 +447,7 @@ input::placeholder {
 }
 
 .portfolio-header {
-  padding-top: 6rem;
+  padding-top: 8rem;
   padding-bottom: 2rem;
   text-align: center;
   background: transparent;
@@ -534,7 +534,7 @@ input::placeholder {
 /* Portfolio Mobile Responsive Adjustments */
 @media (max-width: 768px) {
   .portfolio-header {
-    padding-top: 4rem !important;
+    padding-top: 6.5rem !important; /* Adjusted to prevent fixed navbar overlap */
     padding-bottom: 1.5rem !important;
   }
   
@@ -561,5 +561,41 @@ input::placeholder {
     font-size: 2.2rem !important;
   }
 }
+
+/* --- Fixed Premium Glassmorphic Header Spacing & Styling --- */
+.navbar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 1.25rem 4rem !important; /* Compact premium layout padding */
+  z-index: 1000 !important;
+  box-sizing: border-box !important;
+  background: rgba(10, 10, 10, 0.75) !important; /* Sleek semi-transparent dark tone */
+  backdrop-filter: blur(16px) !important; /* Luxury glassmorphic filter */
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Offset legal container views to ensure text is fully visible below the fixed navbar */
+.terms-page-view, .privacy-page-view {
+  padding-top: 80px !important;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem 1.5rem !important; /* Responsive padding on mobile viewports */
+  }
+  
+  .terms-page-view, .privacy-page-view {
+    padding-top: 70px !important;
+  }
+}
+
 
 

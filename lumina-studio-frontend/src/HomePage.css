@@ -24,18 +24,6 @@ body {
 }
 
 /* --- Navigation --- */
-.navbar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2rem 4rem;
-  z-index: 100;
-  box-sizing: border-box;
-}
 
 .navbar .logo-serif {
   font-family: var(--font-serif);

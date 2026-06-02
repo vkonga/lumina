@@ -5,15 +5,7 @@
   color: var(--text-primary);
   display: flex;
   flex-direction: column;
-}
-
-/* Navbar */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2rem 4rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 90px; /* Offset for fixed glassmorphic navbar */
 }
 
 .logo-serif {
@@ -324,9 +316,8 @@
 }
 
 @media (max-width: 768px) {
-  .navbar {
-    padding: 1.5rem 2rem;
-    gap: 1rem;
+  .store-view {
+    padding-top: 70px; /* Mobile responsive offset */
   }
   
   .store-header, .filter-bar, .product-grid, .newsletter-section {

@@ -40,7 +40,7 @@ const PortfolioView = ({ onNavigate, onOpenCart }) => {
   return (
     <div className="portfolio-page-view" style={{ backgroundColor: '#050505', color: '#f5f5f5', minHeight: '100vh', fontFamily: 'var(--font-sans)' }}>
       {/* Navbar */}
-      <nav className="navbar" style={{ position: 'relative', background: '#050505' }}>
+      <nav className="navbar">
         <div className="logo-serif" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }} onClick={() => onNavigate('home')}>
           <img src={logoImg} alt="SD Photography" style={{ width: '38px', height: '38px', borderRadius: '50%', border: '1.2px solid #c3a168', backgroundColor: '#000', objectFit: 'contain' }} />
           <span>SD PHOTOGRAPHY</span>

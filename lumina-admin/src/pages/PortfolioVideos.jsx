@@ -14,14 +14,6 @@ const PortfolioVideos = () => {
   const [addLoading, setAddLoading] = useState(false);
   const [addSuccess, setAddSuccess] = useState('');
 
-  // Edit Modal State
-  const [editingVideo, setEditingVideo] = useState(null);
-  const [editForm, setEditForm] = useState({
-    title: '',
-    url: ''
-  });
-  const [saveLoading, setSaveLoading] = useState(false);
-  const [saveSuccess, setSaveSuccess] = useState('');
 
   const fetchVideos = async () => {
     try {
@@ -80,13 +72,6 @@ const PortfolioVideos = () => {
     }));
   };
 
-  const handleEditInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditForm((prev) => ({
-      ...prev,
-      [name]: value
-    }));
-  };
 
   const handleAddSubmit = async (e) => {
     e.preventDefault();
@@ -123,52 +108,6 @@ const PortfolioVideos = () => {
     }
   };
 
-  const handleOpenEdit = (video) => {
-    setEditingVideo(video);
-    setEditForm({
-      title: video.title || '',
-      url: video.url || ''
-    });
-    setSaveSuccess('');
-  };
-
-  const handleCloseEdit = () => {
-    setEditingVideo(null);
-    setSaveSuccess('');
-  };
-
-  const handleEditSubmit = async (e) => {
-    e.preventDefault();
-    setSaveLoading(true);
-    setError('');
-    setSaveSuccess('');
-
-    const formattedUrl = getEmbedUrl(editForm.url);
-
-    try {
-      const response = await client.patch(`/admin/portfolio-videos/${editingVideo.id}`, {
-        title: editForm.title,
-        url: formattedUrl
-      });
-
-      if (response.success) {
-        setSaveSuccess('Video details updated successfully!');
-        
-        // Refresh local state list
-        setVideos(prev => prev.map(v => v.id === editingVideo.id ? response.data.video : v));
-        
-        setTimeout(() => {
-          handleCloseEdit();
-        }, 1500);
-      } else {
-        setError(response.message || 'Failed to update video details.');
-      }
-    } catch (err) {
-      setError('An error occurred while saving.');
-    } finally {
-      setSaveLoading(false);
-    }
-  };
 
   const handleDeleteVideo = async (id) => {
     if (!window.confirm('Are you sure you want to remove this video from the portfolio?')) return;
@@ -196,7 +135,6 @@ const PortfolioVideos = () => {
       </header>
 
       {addSuccess && <div className="admin-success-banner">{addSuccess}</div>}
-      {saveSuccess && <div className="admin-success-banner">{saveSuccess}</div>}
       {error && <div className="admin-error-banner">{error}</div>}
 
       <div className="order-detail-grid">
@@ -269,17 +207,10 @@ const PortfolioVideos = () => {
                       <div style={{ display: 'flex', gap: '10px' }}>
                         <button 
                           className="table-action-btn" 
-                          style={{ flex: '1', textAlign: 'center' }}
-                          onClick={() => handleOpenEdit(video)}
-                        >
-                          Edit
-                        </button>
-                        <button 
-                          className="table-action-btn" 
                           style={{ flex: '1', textAlign: 'center', borderColor: 'rgba(220, 53, 69, 0.3)', color: '#ff6b6b' }}
                           onClick={() => handleDeleteVideo(video.id)}
                         >
-                          Delete
+                          Delete Video
                         </button>
                       </div>
                     </div>
@@ -291,52 +222,6 @@ const PortfolioVideos = () => {
         </div>
       </div>
 
-      {/* Edit Video Modal */}
-      {editingVideo && (
-        <div className="checkout-modal-overlay">
-          <div className="checkout-modal-container" style={{ maxWidth: '500px' }}>
-            <div className="checkout-modal-header">
-              <h2>Edit Portfolio Video</h2>
-              <button className="checkout-close-btn" onClick={handleCloseEdit}>&times;</button>
-            </div>
-
-            <form onSubmit={handleEditSubmit} className="checkout-form" style={{ padding: '20px 25px' }}>
-              <div className="checkout-form-grid" style={{ gap: '15px', marginBottom: '20px' }}>
-                <div className="form-group full-width">
-                  <label>Video Title</label>
-                  <input
-                    type="text"
-                    name="title"
-                    value={editForm.title}
-                    onChange={handleEditInputChange}
-                    required
-                  />
-                </div>
-
-                <div className="form-group full-width">
-                  <label>YouTube URL</label>
-                  <input
-                    type="url"
-                    name="url"
-                    value={editForm.url}
-                    onChange={handleEditInputChange}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="checkout-footer-buttons" style={{ paddingTop: '20px', marginTop: '20px' }}>
-                <button type="button" className="btn-cancel" onClick={handleCloseEdit} disabled={saveLoading}>
-                  Discard
-                </button>
-                <button type="submit" className="btn-primary" disabled={saveLoading}>
-                  {saveLoading ? 'Saving changes...' : 'Save Configuration'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
