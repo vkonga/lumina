@@ -216,7 +216,6 @@ const LoginView = ({ onNavigate }) => {
 
                     <footer className="login-footer" style={{ marginBottom: showLocations ? '0.75rem' : '0' }}>
                         <a href="#" onClick={(e) => { e.preventDefault(); setShowLocations(!showLocations); }}>LOCATIONS</a>
-                        <a href="#" onClick={(e) => e.preventDefault()}>CAREERS</a>
                         <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('terms'); }}>TERMS</a>
                         <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('privacy'); }}>PRIVACY</a>
                     </footer>

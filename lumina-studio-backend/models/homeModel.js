@@ -16,8 +16,8 @@ const getGalleryData = async () => {
 };
 
 const getTestimonialData = async () => {
-  const result = await pool.query('SELECT quote, author, location FROM testimonial LIMIT 1');
-  return result.rows[0];
+  const result = await pool.query('SELECT id, quote, author, location FROM testimonial ORDER BY id DESC');
+  return result.rows;
 };
 
 const getSiteContent = async () => {
@@ -39,6 +39,14 @@ const getPortfolioVideos = async () => {
   return result.rows;
 };
 
+const createTestimonial = async (data) => {
+  const result = await pool.query(
+    'INSERT INTO testimonial (quote, author, location) VALUES ($1, $2, $3) RETURNING *',
+    [data.quote, data.author, data.location]
+  );
+  return result.rows[0];
+};
+
 module.exports = {
   getHeroData,
   getServicesData,
@@ -47,4 +55,5 @@ module.exports = {
   getSiteContent,
   getYoutubeSlides,
   getPortfolioVideos,
+  createTestimonial,
 };

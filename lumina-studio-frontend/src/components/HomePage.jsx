@@ -88,6 +88,14 @@ const HomePage = ({ onNavigate, onOpenCart, scrollTarget, setScrollTarget }) => 
   const [showLocations, setShowLocations] = useState(false);
   const [lightboxImg, setLightboxImg] = useState(null);
 
+  // Review Modal States
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [newReviewQuote, setNewReviewQuote] = useState('');
+  const [newReviewLocation, setNewReviewLocation] = useState('');
+  const [reviewLoading, setReviewLoading] = useState(false);
+  const [reviewError, setReviewError] = useState('');
+  const [reviewSuccess, setReviewSuccess] = useState('');
+
   const handleLogout = () => {
     dispatch(logout());
     dispatch(resetCart());
@@ -97,9 +105,57 @@ const HomePage = ({ onNavigate, onOpenCart, scrollTarget, setScrollTarget }) => 
   const dispatch = useDispatch();
   const { data, status, error } = useSelector((state) => state.home);
   const { items: cartItems } = useSelector((state) => state.cart);
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
-  const { services, gallery, siteContent, youtubeSlides, portfolioVideos } = data || {};
+  const { services, gallery, siteContent, youtubeSlides, portfolioVideos, testimonial } = data || {};
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    setReviewError('');
+    setReviewSuccess('');
+
+    if (!newReviewQuote.trim()) {
+      setReviewError('Review content cannot be empty.');
+      return;
+    }
+
+    setReviewLoading(true);
+    try {
+      const token = localStorage.getItem('lumina_auth_token');
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const response = await fetch(`${API_URL}/home/reviews`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          quote: newReviewQuote.trim(),
+          location: newReviewLocation.trim() || 'TUNI, ANDHRA PRADESH'
+        })
+      });
+
+      const resData = await response.json();
+      if (!response.ok) {
+        throw new Error(resData.error || 'Failed to submit review');
+      }
+
+      setReviewSuccess('Thank you! Your premium review has been posted successfully.');
+      setNewReviewQuote('');
+      setNewReviewLocation('');
+      dispatch(fetchHomeData()); // Reload dynamic DB testimonials
+      
+      // Auto close modal after 2 seconds
+      setTimeout(() => {
+        setShowReviewModal(false);
+        setReviewSuccess('');
+      }, 2000);
+    } catch (err) {
+      setReviewError(err.message || 'An error occurred during submission.');
+    } finally {
+      setReviewLoading(false);
+    }
+  };
 
   // Handle auto-scrolling to target sections (e.g. Services / Contact)
   useEffect(() => {
@@ -149,6 +205,14 @@ const HomePage = ({ onNavigate, onOpenCart, scrollTarget, setScrollTarget }) => 
 
   // Count total quantity of items in cart
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
+  const dbTestimonials = testimonial || [];
+  const combinedTestimonials = [...dbTestimonials];
+  testimonials.forEach(item => {
+    if (!combinedTestimonials.some(t => t.quote === item.quote || (t.author === item.author && t.location === item.location))) {
+      combinedTestimonials.push(item);
+    }
+  });
 
   return (
     <div className="home-page">
@@ -360,27 +424,37 @@ const HomePage = ({ onNavigate, onOpenCart, scrollTarget, setScrollTarget }) => 
       <section id="about" className="testimonial-section">
         <div className="quote-icon">"</div>
         <p className="testimonial-text" style={{ minHeight: '120px', transition: 'opacity 0.3s' }}>
-          {testimonials[activeTestimonial].quote}
+          {combinedTestimonials[activeTestimonial % combinedTestimonials.length]?.quote}
         </p>
-        <div className="testimonial-author">{testimonials[activeTestimonial].author}</div>
-        <div className="testimonial-location">{testimonials[activeTestimonial].location}</div>
+        <div className="testimonial-author">{combinedTestimonials[activeTestimonial % combinedTestimonials.length]?.author}</div>
+        <div className="testimonial-location">{combinedTestimonials[activeTestimonial % combinedTestimonials.length]?.location}</div>
 
         <div className="testimonial-nav">
           <button 
             className="nav-arrow"
-            onClick={() => setActiveTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length)}
+            onClick={() => setActiveTestimonial((prev) => (prev - 1 + combinedTestimonials.length) % combinedTestimonials.length)}
             aria-label="Previous testimonial"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
           </button>
           <button 
             className="nav-arrow"
-            onClick={() => setActiveTestimonial((prev) => (prev + 1) % testimonials.length)}
+            onClick={() => setActiveTestimonial((prev) => (prev + 1) % combinedTestimonials.length)}
             aria-label="Next testimonial"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
           </button>
         </div>
+
+        {isAuthenticated ? (
+          <button className="btn-outline review-btn" style={{ marginTop: '2.5rem' }} onClick={() => setShowReviewModal(true)}>
+            LEAVE A REVIEW
+          </button>
+        ) : (
+          <button className="btn-outline review-btn" style={{ marginTop: '2.5rem' }} onClick={() => onNavigate('login')}>
+            SIGN IN TO LEAVE A REVIEW
+          </button>
+        )}
       </section>
 
       {/* Footer */}
@@ -526,6 +600,132 @@ const HomePage = ({ onNavigate, onOpenCart, scrollTarget, setScrollTarget }) => 
             &times;
           </button>
           <img src={lightboxImg} alt="Reference Full View" className="lightbox-image" onClick={(e) => e.stopPropagation()} />
+        </div>
+      )}
+      {/* Review Submission Modal */}
+      {showReviewModal && (
+        <div 
+          className="service-modal-overlay open"
+          onClick={() => setShowReviewModal(false)}
+        >
+          <div className="service-modal-box review-modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '480px' }}>
+            <button className="service-modal-close-btn" onClick={() => setShowReviewModal(false)} aria-label="Close modal">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+            
+            <div className="service-modal-body" style={{ padding: '36px' }}>
+              <div className="service-modal-header" style={{ marginBottom: '8px' }}>
+                <span className="service-modal-num">Share Your Experience</span>
+                <h3 className="service-modal-title" style={{ fontSize: '2rem' }}>Write a Review</h3>
+              </div>
+              
+              <p className="service-modal-desc" style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', marginBottom: '16px' }}>
+                Signed in as <strong style={{ color: '#fff' }}>{user?.username}</strong>. Your feedback is highly appreciated and will be featured on our testimonial slider.
+              </p>
+
+              {reviewError && (
+                <div style={{
+                  background: 'rgba(217, 83, 79, 0.1)',
+                  borderLeft: '3px solid #d9534f',
+                  color: '#f9d6d5',
+                  padding: '10px 14px',
+                  borderRadius: '4px',
+                  fontSize: '0.83rem',
+                  marginBottom: '16px'
+                }}>
+                  {reviewError}
+                </div>
+              )}
+
+              {reviewSuccess && (
+                <div style={{
+                  background: 'rgba(46, 160, 67, 0.1)',
+                  borderLeft: '3px solid #2ea043',
+                  color: '#9ecf88',
+                  padding: '10px 14px',
+                  borderRadius: '4px',
+                  fontSize: '0.83rem',
+                  marginBottom: '16px'
+                }}>
+                  {reviewSuccess}
+                </div>
+              )}
+
+              <form onSubmit={handleReviewSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <label style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)', letterSpacing: '1.5px', textTransform: 'uppercase' }}>
+                    Your Review *
+                  </label>
+                  <textarea
+                    placeholder="Describe your premium experience with SD Photography..."
+                    value={newReviewQuote}
+                    onChange={(e) => setNewReviewQuote(e.target.value)}
+                    required
+                    disabled={reviewLoading}
+                    rows="4"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.03)',
+                      border: '1px solid rgba(241, 213, 146, 0.2)',
+                      borderRadius: '4px',
+                      padding: '10px 12px',
+                      color: '#fff',
+                      fontFamily: 'inherit',
+                      fontSize: '0.9rem',
+                      outline: 'none',
+                      resize: 'none',
+                      lineHeight: '1.5'
+                    }}
+                  />
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <label style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)', letterSpacing: '1.5px', textTransform: 'uppercase' }}>
+                    Your Location (Optional)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. TUNI, ANDHRA PRADESH"
+                    value={newReviewLocation}
+                    onChange={(e) => setNewReviewLocation(e.target.value)}
+                    disabled={reviewLoading}
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.03)',
+                      border: '1px solid rgba(241, 213, 146, 0.2)',
+                      borderRadius: '4px',
+                      padding: '10px 12px',
+                      color: '#fff',
+                      fontFamily: 'inherit',
+                      fontSize: '0.9rem',
+                      outline: 'none'
+                    }}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={reviewLoading}
+                  className="btn-service-inquire"
+                  style={{
+                    alignSelf: 'stretch',
+                    marginTop: '8px',
+                    padding: '14px',
+                    textAlign: 'center',
+                    background: '#f1d592',
+                    color: '#000',
+                    fontWeight: 'bold',
+                    fontSize: '0.8rem',
+                    letterSpacing: '2px',
+                    textTransform: 'uppercase'
+                  }}
+                >
+                  {reviewLoading ? 'Submitting...' : 'POST REVIEW'}
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
       )}
     </div>

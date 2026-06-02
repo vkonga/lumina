@@ -18,7 +18,7 @@ const PrivacyView = ({ onNavigate }) => {
           <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); onNavigate('home', 'contact'); }}>Contact</a>
         </div>
         <div className="nav-actions">
-          <button className="btn-outline" onClick={() => onNavigate('home')}>Go Back</button>
+          <button className="btn-legal-back" onClick={() => onNavigate('home')}>Go Back</button>
         </div>
       </nav>
 

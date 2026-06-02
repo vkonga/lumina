@@ -961,3 +961,29 @@ body {
   }
 }
 
+.review-btn {
+  border-radius: 4px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.review-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(195, 161, 104, 0.15);
+}
+
+.review-modal-box {
+  animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
