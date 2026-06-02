@@ -80,7 +80,7 @@ const serviceDetails = {
   }
 };
 
-const HomePage = ({ onNavigate, onOpenCart }) => {
+const HomePage = ({ onNavigate, onOpenCart, scrollTarget, setScrollTarget }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeHero, setActiveHero] = useState(0);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
@@ -100,6 +100,19 @@ const HomePage = ({ onNavigate, onOpenCart }) => {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   const { services, gallery, siteContent, youtubeSlides, portfolioVideos } = data || {};
+
+  // Handle auto-scrolling to target sections (e.g. Services / Contact)
+  useEffect(() => {
+    if (scrollTarget) {
+      const el = document.getElementById(scrollTarget);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
+      }
+      setScrollTarget(null);
+    }
+  }, [scrollTarget, setScrollTarget]);
 
   // Auto-rotate Hero Slides every 6 seconds
   useEffect(() => {
@@ -141,7 +154,7 @@ const HomePage = ({ onNavigate, onOpenCart }) => {
     <div className="home-page">
       {/* Navbar */}
       <nav className="navbar">
-        <div className="logo-serif" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }} onClick={() => onNavigate('home')}>
+        <div className="logo-serif" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }} onClick={() => { onNavigate('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
           <img src={logoImg} alt="SD Photography" style={{ width: '38px', height: '38px', borderRadius: '50%', border: '1.2px solid #c3a168', backgroundColor: '#000', objectFit: 'contain' }} />
           <span>SD PHOTOGRAPHY</span>
         </div>

@@ -55,13 +55,20 @@ function App() {
     }
   }, [isAuthenticated, dispatch]);
 
+  const [scrollTarget, setScrollTarget] = useState(null);
+
+  const handleNavigate = (view, target = null) => {
+    setCurrentView(view);
+    setScrollTarget(target);
+  };
+
   // Handle session expiry events (fired by ResponseInterceptor on 401)
   useEffect(() => {
     const handleSessionExpired = () => {
       dispatch(logout());
       dispatch(resetCart());
       setCartOpen(false);
-      setCurrentView('login');
+      handleNavigate('login');
     };
     window.addEventListener('lumina:session-expired', handleSessionExpired);
     return () => window.removeEventListener('lumina:session-expired', handleSessionExpired);
@@ -70,19 +77,19 @@ function App() {
   const renderView = () => {
     switch (currentView) {
       case 'home':
-        return <HomePage onNavigate={setCurrentView} onOpenCart={() => setCartOpen(true)} />;
+        return <HomePage onNavigate={handleNavigate} scrollTarget={scrollTarget} setScrollTarget={setScrollTarget} onOpenCart={() => setCartOpen(true)} />;
       case 'store':
-        return <StoreView onNavigate={setCurrentView} onOpenCart={() => setCartOpen(true)} />;
+        return <StoreView onNavigate={handleNavigate} onOpenCart={() => setCartOpen(true)} />;
       case 'portfolio':
-        return <PortfolioView onNavigate={setCurrentView} onOpenCart={() => setCartOpen(true)} />;
+        return <PortfolioView onNavigate={handleNavigate} onOpenCart={() => setCartOpen(true)} />;
       case 'login':
-        return <LoginView onNavigate={setCurrentView} />;
+        return <LoginView onNavigate={handleNavigate} />;
       case 'terms':
-        return <TermsView onNavigate={setCurrentView} />;
+        return <TermsView onNavigate={handleNavigate} />;
       case 'privacy':
-        return <PrivacyView onNavigate={setCurrentView} />;
+        return <PrivacyView onNavigate={handleNavigate} />;
       default:
-        return <HomePage onNavigate={setCurrentView} onOpenCart={() => setCartOpen(true)} />;
+        return <HomePage onNavigate={handleNavigate} scrollTarget={scrollTarget} setScrollTarget={setScrollTarget} onOpenCart={() => setCartOpen(true)} />;
     }
   };
 

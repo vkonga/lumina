@@ -13,9 +13,9 @@ const TermsView = ({ onNavigate }) => {
         </div>
         <div className="nav-links">
           <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); onNavigate('portfolio'); }}>Portfolio</a>
-          <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); onNavigate('home'); }}>Services</a>
+          <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); onNavigate('home', 'services'); }}>Services</a>
           <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); onNavigate('store'); }}>Store</a>
-          <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); onNavigate('home'); }}>Contact</a>
+          <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); onNavigate('home', 'contact'); }}>Contact</a>
         </div>
         <div className="nav-actions">
           <button className="btn-outline" onClick={() => onNavigate('home')}>Go Back</button>

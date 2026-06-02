@@ -1,7 +1,7 @@
 .login-container {
   display: flex;
   height: 100vh;
-  background-color: #0d0d0d;
+  background-color: #121110;
   color: #fff;
   font-family: 'Inter', sans-serif;
 }
@@ -155,7 +155,7 @@
 .login-divider span {
   position: relative;
   z-index: 2;
-  background: #0d0d0d;
+  background: #121110;
   padding: 0 16px;
   font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.5);
@@ -197,11 +197,10 @@
 }
 
 .login-loading {
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #0d0d0d;
+  background: #121110;
   color: #d4af37;
   font-family: 'Playfair Display', serif;
   font-size: 2rem;
