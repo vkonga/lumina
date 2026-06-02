@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchCart } from '../store/cartSlice';
 import * as orderApi from '../api/order.api';
@@ -35,6 +35,14 @@ const CheckoutModal = ({ isOpen, onClose, cartItems, subtotal }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [orderId, setOrderId] = useState(null);
+  const [paidAmount, setPaidAmount] = useState(0);
+
+  // Sync subtotal to paidAmount local state to preserve it when cart is cleared on success
+  useEffect(() => {
+    if (subtotal > 0) {
+      setPaidAmount(subtotal);
+    }
+  }, [subtotal]);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -453,7 +461,9 @@ const CheckoutModal = ({ isOpen, onClose, cartItems, subtotal }) => {
               <p><strong>Phone:</strong> {formData.delivery_phone}</p>
               <p><strong>Address:</strong> {formData.delivery_address}, {formData.delivery_city}, {formData.delivery_state} - {formData.delivery_pincode}</p>
               <p><strong>Payment Method:</strong> {formData.payment_method === 'cod' ? 'Cash on Delivery' : 'Online Payment (Razorpay)'}</p>
-              <p className="success-total"><strong>Total Paid:</strong> ₹{Math.round(subtotal)}</p>
+              <p className="success-total">
+                <strong>{formData.payment_method === 'cod' ? 'Total Amount:' : 'Total Paid:'}</strong> ₹{Math.round(paidAmount)}
+              </p>
             </div>
 
             <button className="btn-primary close-success-btn" onClick={handleClose}>
