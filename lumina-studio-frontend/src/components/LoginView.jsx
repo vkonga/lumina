@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchHomeData } from '../store/homeSlice';
 import { loginUser, registerUser, clearAuthError } from '../store/authSlice';
 import { resetPassword } from '../api/auth.api';
+import logoImg from '../assets/logo.png';
 import './LoginView.css';
 
 const LoginView = ({ onNavigate }) => {
@@ -118,9 +119,10 @@ const LoginView = ({ onNavigate }) => {
         <div className="login-container">
             <div className="login-left-panel">
                 <div className="login-overlay"></div>
-                <div className="login-hero-text">
-                    <h1 className="hero-quote-title">{siteContent.login_hero_title}</h1>
-                    <p className="hero-quote-subtitle">{siteContent.login_hero_subtitle}</p>
+                <div className="login-hero-text" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', width: '100%', paddingBottom: '40px' }}>
+                    <img src={logoImg} alt="SD Photography Logo" style={{ width: '140px', height: '140px', borderRadius: '50%', border: '2px solid #c3a168', backgroundColor: '#000', marginBottom: '28px', objectFit: 'contain', boxShadow: '0 10px 30px rgba(195,161,104,0.2)' }} />
+                    <h1 className="hero-quote-title" style={{ fontFamily: "'Playfair Display', serif", fontSize: '3rem', color: '#fff', letterSpacing: '3px', textTransform: 'uppercase', margin: '0 0 12px 0', fontWeight: '400', textShadow: '0 4px 12px rgba(0,0,0,0.6)' }}>SD PHOTOGRAPHY</h1>
+                    <p className="hero-quote-subtitle" style={{ fontSize: '0.85rem', letterSpacing: '4px', color: '#c3a168', textTransform: 'uppercase', margin: 0, fontWeight: '700', textShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>ELITE STUDIO ACCESS</p>
                 </div>
             </div>
 
