@@ -1,6 +1,7 @@
 /* LoginView.css — Co-located with src/pages/Login/LoginView.jsx */
 .login-container {
     display: flex;
+    width: 100vw;
     height: 100vh;
     background-color: #121110;
     color: var(--text-primary);
