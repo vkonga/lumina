@@ -167,6 +167,10 @@ const verifyPayment = async (req, res, next) => {
       payment_type: paymentType
     });
 
+    // 4. Clear user's cart since payment succeeded
+    const userId = req.user.id;
+    await cartModel.clearCart(userId);
+
     res.status(200).json({
       message: 'Payment verified and order confirmed successfully.',
       order: updatedOrder

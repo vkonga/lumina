@@ -56,8 +56,10 @@ const createOrder = async (userId, orderData, items) => {
       ]);
     }
 
-    // 3. Clear cart
-    await client.query('DELETE FROM cart_items WHERE user_id = $1', [userId]);
+    // 3. Clear cart (ONLY for COD orders! Online payments clear the cart upon successful payment verification)
+    if (orderData.payment_method === 'cod') {
+      await client.query('DELETE FROM cart_items WHERE user_id = $1', [userId]);
+    }
 
     await client.query('COMMIT');
     return order;
