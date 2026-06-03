@@ -10,6 +10,7 @@ import { fetchCart, resetCart } from './store/cartSlice';
 import { getMe } from './api/auth.api';
 import PrivacyView from './components/PrivacyView';
 import TermsView from './components/TermsView';
+import OrdersView from './components/OrdersView';
 import './App.css';
 
 function App() {
@@ -88,6 +89,8 @@ function App() {
         return <TermsView onNavigate={handleNavigate} />;
       case 'privacy':
         return <PrivacyView onNavigate={handleNavigate} />;
+      case 'orders':
+        return <OrdersView onNavigate={handleNavigate} onOpenCart={() => setCartOpen(true)} />;
       default:
         return <HomePage onNavigate={handleNavigate} scrollTarget={scrollTarget} setScrollTarget={setScrollTarget} onOpenCart={() => setCartOpen(true)} />;
     }
@@ -96,7 +99,7 @@ function App() {
   return (
     <>
       {renderView()}
-      <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+      <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} onNavigate={handleNavigate} />
     </>
   );
 }

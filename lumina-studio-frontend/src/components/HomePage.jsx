@@ -227,6 +227,9 @@ const HomePage = ({ onNavigate, onOpenCart, scrollTarget, setScrollTarget }) => 
           <a href="#services" className="nav-link" onClick={(e) => { e.preventDefault(); const el = document.getElementById('services'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}>Services</a>
           <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); onNavigate('store'); }}>Store</a>
           <a href="#contact" className="nav-link" onClick={(e) => { e.preventDefault(); const el = document.getElementById('contact'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}>Contact</a>
+          {isAuthenticated && (
+            <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); onNavigate('orders'); }}>My Orders</a>
+          )}
         </div>
         <div className="nav-actions">
           {!isAuthenticated ? (
@@ -304,6 +307,9 @@ const HomePage = ({ onNavigate, onOpenCart, scrollTarget, setScrollTarget }) => 
           <a href="#services" className="mobile-nav-link" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); const el = document.getElementById('services'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}>Services</a>
           <a href="#" className="mobile-nav-link" onClick={(e) => { e.preventDefault(); onNavigate('store'); setMobileMenuOpen(false); }}>Store</a>
           <a href="#contact" className="mobile-nav-link" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); const el = document.getElementById('contact'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}>Contact</a>
+          {isAuthenticated && (
+            <a href="#" className="mobile-nav-link" onClick={(e) => { e.preventDefault(); onNavigate('orders'); setMobileMenuOpen(false); }}>My Orders</a>
+          )}
           {!isAuthenticated ? (
             <a href="#" className="mobile-nav-link" style={{ color: '#c3a168', marginTop: '1rem' }} onClick={(e) => { e.preventDefault(); onNavigate('login'); setMobileMenuOpen(false); }}>Sign In</a>
           ) : (

@@ -50,6 +50,9 @@ const PortfolioView = ({ onNavigate, onOpenCart }) => {
           <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); onNavigate('home', 'services'); }}>Services</a>
           <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); onNavigate('store'); }}>Store</a>
           <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); onNavigate('home', 'contact'); }}>Contact</a>
+          {isAuthenticated && (
+            <a href="#" className="nav-link" onClick={(e) => { e.preventDefault(); onNavigate('orders'); }}>My Orders</a>
+          )}
         </div>
         <div className="nav-actions">
           {!isAuthenticated ? (
@@ -127,6 +130,9 @@ const PortfolioView = ({ onNavigate, onOpenCart }) => {
           <a href="#" className="mobile-nav-link" onClick={(e) => { e.preventDefault(); onNavigate('home', 'services'); setMobileMenuOpen(false); }}>Services</a>
           <a href="#" className="mobile-nav-link" onClick={(e) => { e.preventDefault(); onNavigate('store'); setMobileMenuOpen(false); }}>Store</a>
           <a href="#" className="mobile-nav-link" onClick={(e) => { e.preventDefault(); onNavigate('home', 'contact'); setMobileMenuOpen(false); }}>Contact</a>
+          {isAuthenticated && (
+            <a href="#" className="mobile-nav-link" onClick={(e) => { e.preventDefault(); onNavigate('orders'); setMobileMenuOpen(false); }}>My Orders</a>
+          )}
           {!isAuthenticated ? (
             <a href="#" className="mobile-nav-link" style={{ color: '#c3a168', marginTop: '1rem' }} onClick={(e) => { e.preventDefault(); onNavigate('login'); setMobileMenuOpen(false); }}>Sign In</a>
           ) : (

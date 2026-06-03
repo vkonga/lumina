@@ -15,7 +15,7 @@ const imageMap = {
   'mug.png': mugImg
 };
 
-const CartDrawer = ({ isOpen, onClose }) => {
+const CartDrawer = ({ isOpen, onClose, onNavigate }) => {
   const dispatch = useDispatch();
   const { items: cartItems, loading } = useSelector((state) => state.cart);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -253,6 +253,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
         onClose={() => setIsCheckoutOpen(false)} 
         cartItems={cartItems} 
         subtotal={subtotal} 
+        onNavigate={onNavigate}
       />
     </>
   );

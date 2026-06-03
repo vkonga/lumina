@@ -29,7 +29,7 @@ const imageMap = {
   'mug.png': mugImg
 };
 
-const CheckoutModal = ({ isOpen, onClose, cartItems, subtotal }) => {
+const CheckoutModal = ({ isOpen, onClose, cartItems, subtotal, onNavigate }) => {
   const dispatch = useDispatch();
   const [step, setStep] = useState(1); // 1: Address, 2: Review & Payment, 3: Success
   const [loading, setLoading] = useState(false);
@@ -466,9 +466,27 @@ const CheckoutModal = ({ isOpen, onClose, cartItems, subtotal }) => {
               </p>
             </div>
 
-            <button className="btn-primary close-success-btn" onClick={handleClose}>
-              Continue Shopping
-            </button>
+            <div style={{ display: 'flex', gap: '1.5rem', width: '100%', maxWidth: '500px', justifyContent: 'center', marginTop: '10px', flexWrap: 'wrap' }}>
+              <button className="btn-primary close-success-btn" onClick={handleClose} style={{ flex: 1, minWidth: '200px' }}>
+                Continue Shopping
+              </button>
+              <button 
+                className="btn-primary close-success-btn" 
+                onClick={() => {
+                  handleClose();
+                  if (onNavigate) onNavigate('orders');
+                }}
+                style={{ 
+                  flex: 1, 
+                  minWidth: '200px',
+                  backgroundColor: 'transparent', 
+                  border: '1px solid #c3a168', 
+                  color: '#c3a168' 
+                }}
+              >
+                View My Orders
+              </button>
+            </div>
           </div>
         )}
 
