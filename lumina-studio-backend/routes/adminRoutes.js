@@ -29,4 +29,9 @@ router.post('/portfolio-videos', adminController.addPortfolioVideo);
 router.patch('/portfolio-videos/:id', adminController.updatePortfolioVideo);
 router.delete('/portfolio-videos/:id', adminController.deletePortfolioVideo);
 
+router.get('/offers', adminController.getOffers);
+router.post('/offers', adminController.addOffer);
+router.patch('/offers/:id', adminController.updateOffer);
+router.delete('/offers/:id', adminController.deleteOffer);
+
 module.exports = router;

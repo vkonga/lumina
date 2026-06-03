@@ -60,6 +60,21 @@ const migrate = async () => {
     `);
     console.log('✔ Created order_items table');
 
+    // 3b. Create offers table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS offers (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
+        image_url TEXT,
+        discount_code VARCHAR(50),
+        is_active BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    console.log('✔ Created offers table');
+
     // 4. Ensure admin user exists
     const adminEmail = process.env.ADMIN_EMAIL || 'admin@lumina.com';
     const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';

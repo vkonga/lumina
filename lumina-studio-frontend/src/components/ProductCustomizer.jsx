@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addItemToCart } from '../store/cartSlice';
 import { uploadProductImage } from '../api/upload.api';
 import './ProductCustomizer.css';
+import AuthPromptModal from './AuthPromptModal';
 
 // ─── Color palettes per product type ───────────────────────────────────────
 const COLOR_PALETTES = {
@@ -242,7 +243,7 @@ const ProductPreview = ({ shape, color, imageUrl, selectedSize }) => {
 };
 
 // ─── Main Component ────────────────────────────────────────────────────────
-const ProductCustomizer = ({ product, onClose, onOpenCart }) => {
+const ProductCustomizer = ({ product, onClose, onOpenCart, onNavigate }) => {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((s) => s.auth);
 
@@ -258,6 +259,7 @@ const ProductCustomizer = ({ product, onClose, onOpenCart }) => {
   const [addingToCart,   setAddingToCart]   = useState(false);
   const [addSuccess,     setAddSuccess]     = useState(false);
   const [error,          setError]          = useState('');
+  const [showAuthModal,  setShowAuthModal]  = useState(false);
 
   const fileInputRef = useRef(null);
 
@@ -299,7 +301,7 @@ const ProductCustomizer = ({ product, onClose, onOpenCart }) => {
   // ── Add to bag ─────────────────────────────────────────────────────────
   const handleAddToBag = async () => {
     if (!isAuthenticated) {
-      setError('Please sign in to add items to your bag.');
+      setShowAuthModal(true);
       return;
     }
     if (!uploadedFile) {
@@ -514,6 +516,7 @@ const ProductCustomizer = ({ product, onClose, onOpenCart }) => {
           </div>
         </div>
       </div>
+      <AuthPromptModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} onNavigate={onNavigate} />
     </div>
   );
 };

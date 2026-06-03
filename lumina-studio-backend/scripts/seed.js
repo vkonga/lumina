@@ -5,7 +5,7 @@ const seedData = async () => {
     // Drop only content/product tables — PRESERVE users & cart_items so existing accounts survive!
     await pool.query(`
       DROP TABLE IF EXISTS cart_items CASCADE;
-      DROP TABLE IF EXISTS product_sizes, youtube_slides, portfolio_videos, products, hero, services, gallery, testimonial, videos, site_content CASCADE;
+      DROP TABLE IF EXISTS product_sizes, youtube_slides, portfolio_videos, products, hero, services, gallery, testimonial, videos, site_content, offers CASCADE;
     `);
 
     console.log('Creating tables...');
@@ -99,6 +99,17 @@ const seedData = async () => {
         id SERIAL PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
         url TEXT NOT NULL
+      );
+
+      CREATE TABLE IF NOT EXISTS offers (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
+        image_url TEXT,
+        discount_code VARCHAR(50),
+        is_active BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
 
@@ -342,6 +353,30 @@ const seedData = async () => {
       await pool.query(
         `INSERT INTO portfolio_videos (title, url) VALUES ($1, $2)`,
         [video.title, video.url]
+      );
+    }
+
+    // Insert Seed Offers
+    const seedOffers = [
+      {
+        title: 'Inaugural Studio Celebration',
+        description: 'Get an exclusive 15% discount on all custom photo prints and premium walnut framing collections. Celebrate our launch with us!',
+        discount_code: 'SDLAUNCH15',
+        image_url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1000&auto=format&fit=crop',
+        is_active: true
+      },
+      {
+        title: 'Wedding Season Special',
+        description: 'Planning your big day? Book any Candid Photography package this month and get a complimentary bespoke wedding canvas print.',
+        discount_code: 'SDWEDDING',
+        image_url: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop',
+        is_active: true
+      }
+    ];
+    for (const offer of seedOffers) {
+      await pool.query(
+        `INSERT INTO offers (title, description, discount_code, image_url, is_active) VALUES ($1, $2, $3, $4, $5)`,
+        [offer.title, offer.description, offer.discount_code, offer.image_url, offer.is_active]
       );
     }
 

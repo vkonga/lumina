@@ -987,3 +987,151 @@ body {
   }
 }
 
+/* Offers Popup Styles */
+.offers-popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: offersFadeIn 0.3s ease-out;
+}
+
+.offers-popup-box {
+  background: linear-gradient(145deg, #0d0d0d 0%, #161616 100%);
+  border: 1.2px solid rgba(195, 161, 104, 0.25);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(195, 161, 104, 0.05);
+  animation: offersSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.offers-popup-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, transform 0.2s;
+  z-index: 10;
+}
+
+.offers-popup-close:hover {
+  color: #f1d592;
+  transform: scale(1.1);
+}
+
+.offers-popup-banner {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid rgba(195, 161, 104, 0.15);
+}
+
+.offers-popup-body {
+  padding: 30px;
+  text-align: center;
+}
+
+.offers-popup-title {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  color: #fff;
+  letter-spacing: 1px;
+  margin: 0 0 8px 0;
+}
+
+.offers-popup-kicker {
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: #c3a168;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.offers-popup-desc {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0 0 20px 0;
+}
+
+.offers-popup-code-box {
+  margin: 0 auto 24px auto;
+  max-width: 280px;
+}
+
+.offers-popup-code-label {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.offers-popup-code-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #c3a168;
+  background: rgba(195, 161, 104, 0.08);
+  border: 1px dashed rgba(195, 161, 104, 0.35);
+  padding: 8px 16px;
+  border-radius: 4px;
+  display: inline-block;
+  letter-spacing: 1.5px;
+}
+
+.offers-popup-action-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #c3a168, #a0824d);
+  border: none;
+  border-radius: 4px;
+  color: #000;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.offers-popup-action-btn:hover {
+  opacity: 0.95;
+  box-shadow: 0 4px 15px rgba(195, 161, 104, 0.25);
+}
+
+@keyframes offersFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes offersSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

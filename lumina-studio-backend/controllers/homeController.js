@@ -2,7 +2,7 @@ const homeModel = require('../models/homeModel');
 
 const getHomeData = async (req, res, next) => {
   try {
-    const [hero, services, gallery, testimonial, siteContent, youtubeSlides, portfolioVideos] = await Promise.all([
+    const [hero, services, gallery, testimonial, siteContent, youtubeSlides, portfolioVideos, offers] = await Promise.all([
       homeModel.getHeroData(),
       homeModel.getServicesData(),
       homeModel.getGalleryData(),
@@ -10,6 +10,7 @@ const getHomeData = async (req, res, next) => {
       homeModel.getSiteContent(),
       homeModel.getYoutubeSlides(),
       homeModel.getPortfolioVideos(),
+      homeModel.getActiveOffersData(),
     ]);
 
     res.status(200).json({
@@ -20,6 +21,7 @@ const getHomeData = async (req, res, next) => {
       siteContent,
       youtubeSlides,
       portfolioVideos,
+      offers,
     });
   } catch (error) {
     next(error);

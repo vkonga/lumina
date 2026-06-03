@@ -1,6 +1,7 @@
 const pool = require('../config/db');
 const orderModel = require('../models/orderModel');
 const productModel = require('../models/productModel');
+const offerModel = require('../models/offerModel');
 
 /**
  * Get dashboard metrics
@@ -351,6 +352,98 @@ const deletePortfolioVideo = async (req, res, next) => {
   }
 };
 
+/**
+ * Get all offers (admin)
+ */
+const getOffers = async (req, res, next) => {
+  try {
+    const offers = await offerModel.getAllOffers();
+    res.status(200).json(offers);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Add a new offer (admin)
+ */
+const addOffer = async (req, res, next) => {
+  try {
+    const { title, description, image_url, discount_code, is_active } = req.body;
+    if (!title || !description) {
+      return res.status(400).json({ error: 'Title and description are required.' });
+    }
+
+    const offer = await offerModel.createOffer({
+      title,
+      description,
+      image_url,
+      discount_code,
+      is_active
+    });
+
+    res.status(201).json({
+      message: 'Offer created successfully.',
+      offer
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Update an offer (admin)
+ */
+const updateOffer = async (req, res, next) => {
+  try {
+    const offerId = parseInt(req.params.id, 10);
+    const { title, description, image_url, discount_code, is_active } = req.body;
+
+    if (!title || !description) {
+      return res.status(400).json({ error: 'Title and description are required.' });
+    }
+
+    const offer = await offerModel.updateOffer(offerId, {
+      title,
+      description,
+      image_url,
+      discount_code,
+      is_active
+    });
+
+    if (!offer) {
+      return res.status(404).json({ error: 'Offer not found.' });
+    }
+
+    res.status(200).json({
+      message: 'Offer updated successfully.',
+      offer
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Delete an offer (admin)
+ */
+const deleteOffer = async (req, res, next) => {
+  try {
+    const offerId = parseInt(req.params.id, 10);
+    const offer = await offerModel.deleteOffer(offerId);
+
+    if (!offer) {
+      return res.status(404).json({ error: 'Offer not found.' });
+    }
+
+    res.status(200).json({
+      message: 'Offer deleted successfully.'
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getStats,
   getOrders,
@@ -365,5 +458,9 @@ module.exports = {
   getPortfolioVideos,
   addPortfolioVideo,
   updatePortfolioVideo,
-  deletePortfolioVideo
+  deletePortfolioVideo,
+  getOffers,
+  addOffer,
+  updateOffer,
+  deleteOffer
 };

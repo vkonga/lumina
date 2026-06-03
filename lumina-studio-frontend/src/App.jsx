@@ -14,7 +14,7 @@ import OrdersView from './components/OrdersView';
 import './App.css';
 
 function App() {
-  const [currentView, setCurrentView] = useState('login');
+  const [currentView, setCurrentView] = useState('home');
   const [cartOpen, setCartOpen] = useState(false);
   const dispatch = useDispatch();
 
@@ -37,14 +37,14 @@ function App() {
         localStorage.removeItem('lumina_auth_token');
         dispatch(logout());
         dispatch(resetCart());
-        setCurrentView('login');
+        setCurrentView('home');
       }
     }).catch(() => {
       // 401 or network error → clear stale session
       localStorage.removeItem('lumina_auth_token');
       dispatch(logout());
       dispatch(resetCart());
-      setCurrentView('login');
+      setCurrentView('home');
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // run once on mount
@@ -58,9 +58,51 @@ function App() {
 
   const [scrollTarget, setScrollTarget] = useState(null);
 
+  // Handle popstate (browser back/forward buttons)
+  useEffect(() => {
+    const handlePopState = (event) => {
+      if (event.state && event.state.view) {
+        setCurrentView(event.state.view);
+        setScrollTarget(event.state.target);
+      } else {
+        const hash = window.location.hash.replace('#', '');
+        if (hash) {
+          const parts = hash.split('-');
+          setCurrentView(parts[0]);
+          setScrollTarget(parts[1] || null);
+        } else {
+          setCurrentView('home');
+          setScrollTarget(null);
+        }
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    // Parse initial hash if present
+    const initialHash = window.location.hash.replace('#', '');
+    let initialView = 'home';
+    let initialTarget = null;
+    if (initialHash) {
+      const parts = initialHash.split('-');
+      initialView = parts[0];
+      initialTarget = parts[1] || null;
+      setCurrentView(initialView);
+      setScrollTarget(initialTarget);
+    }
+    window.history.replaceState({ view: initialView, target: initialTarget }, '', window.location.hash || '#home');
+
+    return () => window.removeEventListener('popstate', handlePopState);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleNavigate = (view, target = null) => {
     setCurrentView(view);
     setScrollTarget(target);
+    const currentHash = `#${view}${target ? `-${target}` : ''}`;
+    if (window.location.hash !== currentHash) {
+      window.history.pushState({ view, target }, '', currentHash);
+    }
   };
 
   // Handle session expiry events (fired by ResponseInterceptor on 401)
@@ -69,7 +111,7 @@ function App() {
       dispatch(logout());
       dispatch(resetCart());
       setCartOpen(false);
-      handleNavigate('login');
+      handleNavigate('home');
     };
     window.addEventListener('lumina:session-expired', handleSessionExpired);
     return () => window.removeEventListener('lumina:session-expired', handleSessionExpired);
@@ -84,7 +126,7 @@ function App() {
       case 'portfolio':
         return <PortfolioView onNavigate={handleNavigate} onOpenCart={() => setCartOpen(true)} />;
       case 'login':
-        return <LoginView onNavigate={handleNavigate} />;
+        return <LoginView onNavigate={handleNavigate} initialSignUp={scrollTarget === 'signup'} />;
       case 'terms':
         return <TermsView onNavigate={handleNavigate} />;
       case 'privacy':

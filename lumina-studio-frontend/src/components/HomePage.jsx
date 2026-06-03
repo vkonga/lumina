@@ -90,6 +90,8 @@ const HomePage = ({ onNavigate, onOpenCart, scrollTarget, setScrollTarget }) => 
 
   // Review Modal States
   const [showReviewModal, setShowReviewModal] = useState(false);
+  const [showOfferPopup, setShowOfferPopup] = useState(false);
+  const [currentOffer, setCurrentOffer] = useState(null);
   const [newReviewQuote, setNewReviewQuote] = useState('');
   const [newReviewLocation, setNewReviewLocation] = useState('');
   const [reviewLoading, setReviewLoading] = useState(false);
@@ -184,6 +186,30 @@ const HomePage = ({ onNavigate, onOpenCart, scrollTarget, setScrollTarget }) => 
       dispatch(fetchHomeData());
     }
   }, [status, dispatch]);
+
+  // Check and show active offer popup (once per session)
+  useEffect(() => {
+    if (status === 'succeeded' && data?.offers && data.offers.length > 0) {
+      const dismissed = sessionStorage.getItem('lumina_offer_dismissed');
+      if (!dismissed) {
+        // Select the first active offer
+        const activeOffer = data.offers.find(o => o.is_active !== false);
+        if (activeOffer) {
+          setCurrentOffer(activeOffer);
+          // Wait 1.5 seconds after landing for elegant entry animation
+          const timer = setTimeout(() => {
+            setShowOfferPopup(true);
+          }, 1500);
+          return () => clearTimeout(timer);
+        }
+      }
+    }
+  }, [status, data]);
+
+  const handleCloseOffer = () => {
+    setShowOfferPopup(false);
+    sessionStorage.setItem('lumina_offer_dismissed', 'true');
+  };
 
   if (status === 'loading' || status === 'idle') {
     return (
@@ -512,7 +538,6 @@ const HomePage = ({ onNavigate, onOpenCart, scrollTarget, setScrollTarget }) => 
             </a>
           </div>
         )}
-
         <div className="social-icons">
           <a href="https://www.instagram.com/sd_photography_durga?igsh=YTM5Z3BlNGJoM3li" target="_blank" rel="noreferrer" title="Instagram" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
@@ -520,6 +545,13 @@ const HomePage = ({ onNavigate, onOpenCart, scrollTarget, setScrollTarget }) => 
           <a href="https://www.youtube.com/@sdphotographytuni7234" target="_blank" rel="noreferrer" title="YouTube" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
           </a>
+          {siteContent.contact_phone && (
+            <a href={`https://wa.me/91${siteContent.contact_phone}`} target="_blank" rel="noreferrer" title="WhatsApp" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 21l1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"></path>
+              </svg>
+            </a>
+          )}
         </div>
 
         <div className="footer-contact-info">
@@ -733,6 +765,44 @@ const HomePage = ({ onNavigate, onOpenCart, scrollTarget, setScrollTarget }) => 
                   {reviewLoading ? 'Submitting...' : 'POST REVIEW'}
                 </button>
               </form>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Offers Popup Modal */}
+      {showOfferPopup && currentOffer && (
+        <div className="offers-popup-overlay" onClick={handleCloseOffer}>
+          <div className="offers-popup-box" onClick={(e) => e.stopPropagation()}>
+            <button className="offers-popup-close" onClick={handleCloseOffer} aria-label="Close promotion">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+            {currentOffer.image_url && (
+              <img src={currentOffer.image_url} alt={currentOffer.title} className="offers-popup-banner" />
+            )}
+            <div className="offers-popup-body">
+              <span className="offers-popup-kicker">Exclusive Promotion</span>
+              <h2 className="offers-popup-title">{currentOffer.title}</h2>
+              <p className="offers-popup-desc">{currentOffer.description}</p>
+              
+              {currentOffer.discount_code && (
+                <div className="offers-popup-code-box">
+                  <span className="offers-popup-code-label">Use discount code</span>
+                  <span className="offers-popup-code-value">{currentOffer.discount_code}</span>
+                </div>
+              )}
+              
+              <button 
+                className="offers-popup-action-btn"
+                onClick={() => {
+                  handleCloseOffer();
+                  onNavigate('store');
+                }}
+              >
+                Go to Boutique Store
+              </button>
             </div>
           </div>
         </div>

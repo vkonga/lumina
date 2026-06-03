@@ -47,6 +47,11 @@ const createTestimonial = async (data) => {
   return result.rows[0];
 };
 
+const getActiveOffersData = async () => {
+  const result = await pool.query('SELECT id, title, description, image_url, discount_code FROM offers WHERE is_active = true ORDER BY id DESC');
+  return result.rows;
+};
+
 module.exports = {
   getHeroData,
   getServicesData,
@@ -56,4 +61,5 @@ module.exports = {
   getYoutubeSlides,
   getPortfolioVideos,
   createTestimonial,
+  getActiveOffersData,
 };

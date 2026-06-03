@@ -17,6 +17,7 @@ import Services from './pages/Services';
 import Users from './pages/Users';
 import UserDetail from './pages/UserDetail';
 import PortfolioVideos from './pages/PortfolioVideos';
+import Offers from './pages/Offers';
 
 // Route Guard to verify admin session
 const AdminRouteGuard = ({ children }) => {
@@ -104,6 +105,14 @@ function App() {
           element={
             <AdminRouteGuard>
               <PortfolioVideos />
+            </AdminRouteGuard>
+          } 
+        />
+        <Route 
+          path="/offers" 
+          element={
+            <AdminRouteGuard>
+              <Offers />
             </AdminRouteGuard>
           } 
         />

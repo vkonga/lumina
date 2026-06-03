@@ -1,0 +1,156 @@
+.auth-prompt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: authPromptFadeIn 0.3s ease-out;
+}
+
+.auth-prompt-box {
+  background: linear-gradient(145deg, #0d0d0d 0%, #161616 100%);
+  border: 1.2px solid rgba(195, 161, 104, 0.25);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 440px;
+  padding: 40px 36px;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(195, 161, 104, 0.05);
+  animation: authPromptSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.auth-prompt-logo-wrap {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.auth-prompt-logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 1.5px solid #c3a168;
+  background-color: #000;
+  object-fit: contain;
+  box-shadow: 0 8px 24px rgba(195, 161, 104, 0.15);
+}
+
+.auth-prompt-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: #fff;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0 0 6px 0;
+  font-weight: 400;
+}
+
+.auth-prompt-kicker {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  color: #c3a168;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.auth-prompt-desc {
+  font-family: 'Outfit', sans-serif;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  margin: 0 0 32px 0;
+  letter-spacing: 0.3px;
+}
+
+.auth-prompt-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.auth-prompt-btn-primary {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #c3a168, #a0824d);
+  border: none;
+  border-radius: 4px;
+  color: #000;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(195, 161, 104, 0.2);
+}
+
+.auth-prompt-btn-primary:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(195, 161, 104, 0.3);
+}
+
+.auth-prompt-btn-outline {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  border: 1.2px solid rgba(195, 161, 104, 0.4);
+  border-radius: 4px;
+  color: #c3a168;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.auth-prompt-btn-outline:hover {
+  background: rgba(195, 161, 104, 0.06);
+  border-color: #c3a168;
+  color: #fff;
+}
+
+.auth-prompt-btn-flat {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 8px;
+  transition: color 0.2s;
+  margin-top: 6px;
+}
+
+.auth-prompt-btn-flat:hover {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+@keyframes authPromptFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes authPromptSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
