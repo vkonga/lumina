@@ -100,7 +100,7 @@ const getOrderById = async (orderId) => {
  */
 const getUserOrders = async (userId) => {
   const result = await pool.query(
-    'SELECT * FROM orders WHERE user_id = $1 ORDER BY created_at DESC',
+    "SELECT * FROM orders WHERE user_id = $1 AND payment_status = 'paid' ORDER BY created_at DESC",
     [userId]
   );
   
