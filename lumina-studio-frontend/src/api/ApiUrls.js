@@ -54,3 +54,13 @@ export const ORDER_URLS = {
     VERIFY_PAYMENT: '/orders/verify-payment',
     FAIL_PAYMENT: '/orders/fail-payment',
 };
+
+/** User listing endpoints (user-managed services & store products) */
+export const LISTING_URLS = {
+    GET_MY_SERVICES: '/listings/services',
+    ADD_SERVICE: '/listings/services',
+    DELETE_SERVICE: (id) => `/listings/services/${id}`,
+    GET_MY_PRODUCTS: '/listings/products',
+    ADD_PRODUCT: '/listings/products',
+    DELETE_PRODUCT: (id) => `/listings/products/${id}`,
+};

@@ -7,6 +7,7 @@ const videoRoutes = require('./videoRoutes');
 const uploadRoutes = require('./uploadRoutes');
 const orderRoutes = require('./orderRoutes');
 const adminRoutes = require('./adminRoutes');
+const userListingRoutes = require('./userListingRoutes');
 
 const router = express.Router();
 
@@ -18,5 +19,6 @@ router.use('/videos', videoRoutes);
 router.use('/uploads', uploadRoutes);
 router.use('/orders', orderRoutes);
 router.use('/admin', adminRoutes);
+router.use('/listings', userListingRoutes);
 
 module.exports = router;

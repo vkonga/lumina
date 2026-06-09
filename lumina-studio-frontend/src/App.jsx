@@ -11,6 +11,7 @@ import { getMe } from './api/auth.api';
 import PrivacyView from './components/PrivacyView';
 import TermsView from './components/TermsView';
 import OrdersView from './components/OrdersView';
+import MyListingsView from './components/MyListingsView';
 import './App.css';
 
 function App() {
@@ -133,6 +134,8 @@ function App() {
         return <PrivacyView onNavigate={handleNavigate} />;
       case 'orders':
         return <OrdersView onNavigate={handleNavigate} onOpenCart={() => setCartOpen(true)} />;
+      case 'listings':
+        return <MyListingsView onNavigate={handleNavigate} onOpenCart={() => setCartOpen(true)} />;
       default:
         return <HomePage onNavigate={handleNavigate} scrollTarget={scrollTarget} setScrollTarget={setScrollTarget} onOpenCart={() => setCartOpen(true)} />;
     }

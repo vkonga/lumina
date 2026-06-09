@@ -98,6 +98,32 @@ const migrate = async () => {
     }
 
     console.log('All migrations completed successfully!');
+
+    // 5. Add user_id FK to services (nullable — admin-created rows keep NULL)
+    await pool.query(`
+      ALTER TABLE services ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id) ON DELETE CASCADE;
+    `);
+    console.log('✔ Added user_id column to services table');
+
+    // 6. Add user_id FK to products (nullable — admin-created rows keep NULL)
+    await pool.query(`
+      ALTER TABLE products ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id) ON DELETE CASCADE;
+    `);
+    console.log('✔ Added user_id column to products table');
+
+    // 7. Add created_at to services if missing
+    await pool.query(`
+      ALTER TABLE services ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+    `);
+    console.log('✔ Added created_at column to services table');
+
+    // 8. Add created_at to products if missing
+    await pool.query(`
+      ALTER TABLE products ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+    `);
+    console.log('✔ Added created_at column to products table');
+
+    console.log('All migrations (including user listings) completed successfully!');
     process.exit(0);
   } catch (error) {
     console.error('Migration failed:', error);
