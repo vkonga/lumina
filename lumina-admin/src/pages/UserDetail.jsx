@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import client from '../api/client';
 
 const UserDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     const fetchUserDetail = async () => {
@@ -26,6 +28,34 @@ const UserDetail = () => {
 
     fetchUserDetail();
   }, [id]);
+
+  const handleDelete = async () => {
+    if (!user) return;
+
+    const confirmed = window.confirm(
+      `Permanently delete account "${user.username}" (${user.email})?\n\nThis action cannot be undone. Their orders will be retained for records.`
+    );
+    if (!confirmed) return;
+
+    setDeleting(true);
+    setError('');
+
+    try {
+      const response = await client.delete(`/admin/users/${user.id}`);
+      if (response.success) {
+        // Redirect to users list with a message
+        navigate('/users', {
+          state: { successMsg: response.data?.message || `User "${user.username}" deleted successfully.` }
+        });
+      } else {
+        setError(response.message || 'Failed to delete user.');
+        setDeleting(false);
+      }
+    } catch (err) {
+      setError('An unexpected error occurred while deleting the user.');
+      setDeleting(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -79,7 +109,7 @@ const UserDetail = () => {
         {/* Left Side: Order History */}
         <div className="detail-col-main">
           <div className="detail-card">
-            <h3>Booking & Order History</h3>
+            <h3>Booking &amp; Order History</h3>
             
             <div className="admin-table-wrapper" style={{ border: 'none', boxShadow: 'none' }}>
               <table className="admin-table">
@@ -179,6 +209,74 @@ const UserDetail = () => {
             </div>
           </div>
 
+          {/* Danger Zone — only for non-admin users */}
+          {!user.is_admin && (
+            <div className="detail-card" style={{
+              border: '1px solid rgba(220,53,69,0.25)',
+              background: 'rgba(220,53,69,0.03)'
+            }}>
+              <h3 style={{ color: '#ff6b6b', borderBottomColor: 'rgba(220,53,69,0.2)' }}>
+                Danger Zone
+              </h3>
+
+              <p style={{ fontSize: '0.85rem', color: '#888', margin: '0 0 1.25rem', lineHeight: '1.5' }}>
+                Permanently delete this customer account from the platform. Their order history will be
+                retained for financial records. This action <strong style={{ color: '#ff6b6b' }}>cannot
+                be undone</strong>.
+              </p>
+
+              <button
+                onClick={handleDelete}
+                disabled={deleting}
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  background: deleting ? 'rgba(220,53,69,0.06)' : 'rgba(220,53,69,0.1)',
+                  border: '1px solid rgba(220,53,69,0.35)',
+                  borderRadius: '6px',
+                  color: '#ff6b6b',
+                  fontFamily: 'inherit',
+                  fontSize: '0.88rem',
+                  fontWeight: '600',
+                  letterSpacing: '0.5px',
+                  cursor: deleting ? 'not-allowed' : 'pointer',
+                  transition: 'all 0.2s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  opacity: deleting ? 0.6 : 1,
+                }}
+                onMouseEnter={(e) => {
+                  if (!deleting) {
+                    e.currentTarget.style.background = 'rgba(220,53,69,0.18)';
+                    e.currentTarget.style.borderColor = 'rgba(220,53,69,0.6)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!deleting) {
+                    e.currentTarget.style.background = 'rgba(220,53,69,0.1)';
+                    e.currentTarget.style.borderColor = 'rgba(220,53,69,0.35)';
+                  }
+                }}
+              >
+                {deleting ? (
+                  <>
+                    <span style={{
+                      width: '14px', height: '14px', border: '2px solid rgba(255,107,107,0.3)',
+                      borderTopColor: '#ff6b6b', borderRadius: '50%',
+                      display: 'inline-block', animation: 'adminSpin 0.7s linear infinite'
+                    }} />
+                    Deleting Account…
+                  </>
+                ) : (
+                  <>
+                    🗑 Delete Account Permanently
+                  </>
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

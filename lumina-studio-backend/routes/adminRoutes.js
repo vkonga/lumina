@@ -23,6 +23,7 @@ router.patch('/services/:id', adminController.updateService);
 
 router.get('/users', adminController.getUsers);
 router.get('/users/:id', adminController.getUserById);
+router.delete('/users/:id', adminController.deleteUser);
 
 router.get('/portfolio-videos', adminController.getPortfolioVideos);
 router.post('/portfolio-videos', adminController.addPortfolioVideo);

@@ -263,6 +263,45 @@ const getUserById = async (req, res, next) => {
 };
 
 /**
+ * Delete a user account permanently
+ * - Blocks deletion of admin accounts
+ * - Orders are kept (SET NULL on user_id) for record-keeping
+ * - User-owned services & products are removed via ON DELETE CASCADE
+ */
+const deleteUser = async (req, res, next) => {
+  try {
+    const userId = parseInt(req.params.id, 10);
+
+    // Fetch user first
+    const userRes = await pool.query(
+      'SELECT id, username, is_admin FROM users WHERE id = $1',
+      [userId]
+    );
+
+    if (userRes.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    const target = userRes.rows[0];
+
+    // Prevent deletion of admin accounts
+    if (target.is_admin) {
+      return res.status(403).json({ error: 'Admin accounts cannot be deleted through this interface.' });
+    }
+
+    // Delete the user — orders keep a NULL user_id (ON DELETE SET NULL)
+    // Services & products owned by the user are removed (ON DELETE CASCADE)
+    await pool.query('DELETE FROM users WHERE id = $1', [userId]);
+
+    res.status(200).json({
+      message: `User "${target.username}" has been permanently deleted.`
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * Get all portfolio videos
  */
 const getPortfolioVideos = async (req, res, next) => {
@@ -455,6 +494,7 @@ module.exports = {
   updateService,
   getUsers,
   getUserById,
+  deleteUser,
   getPortfolioVideos,
   addPortfolioVideo,
   updatePortfolioVideo,
