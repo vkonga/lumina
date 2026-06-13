@@ -107,6 +107,81 @@ const getProducts = async (req, res, next) => {
 };
 
 /**
+ * Create a new store product
+ */
+const createProduct = async (req, res, next) => {
+  try {
+    const { title, price, category, description, image, sizes } = req.body;
+
+    if (!title || price === undefined || !image) {
+      return res.status(400).json({ error: 'Title, price, and image are required.' });
+    }
+
+    const basePrice = parseFloat(price);
+
+    const result = await pool.query(
+      `INSERT INTO products (title, price, category, description, image)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [title, basePrice, category || 'store', description || '', image]
+    );
+
+    const newProduct = result.rows[0];
+
+    // Insert sizes if provided
+    if (sizes && Array.isArray(sizes) && sizes.length > 0) {
+      for (const s of sizes) {
+        if (s.size) {
+          const mod = parseFloat(s.price_modifier) || 0.00;
+          await pool.query(
+            'INSERT INTO product_sizes (product_id, size, price_modifier) VALUES ($1, $2, $3)',
+            [newProduct.id, s.size, mod]
+          );
+        }
+      }
+    }
+
+    // Return full product with sizes
+    const allProducts = await productModel.getAllProducts();
+    const finalProduct = allProducts.find(p => p.id === newProduct.id);
+
+    res.status(201).json({
+      success: true,
+      message: 'Product created successfully.',
+      product: finalProduct
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Delete a store product
+ */
+const deleteProduct = async (req, res, next) => {
+  try {
+    const productId = parseInt(req.params.id, 10);
+
+    // product_sizes deleted automatically via ON DELETE CASCADE
+    const result = await pool.query(
+      'DELETE FROM products WHERE id = $1 RETURNING *',
+      [productId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Product not found.' });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Product deleted successfully.'
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * Update product price, title, description and sizes
  */
 const updateProduct = async (req, res, next) => {
@@ -172,6 +247,69 @@ const getServices = async (req, res, next) => {
   try {
     const result = await pool.query('SELECT id, title, img, price, reference_images FROM services ORDER BY id ASC');
     res.status(200).json(result.rows);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Create a new photography service
+ */
+const createService = async (req, res, next) => {
+  try {
+    const { title, img, price, reference_images } = req.body;
+
+    if (!title) {
+      return res.status(400).json({ error: 'Service title is required.' });
+    }
+
+    // Auto-generate a zero-padded numeric string ID (services PK is VARCHAR)
+    const maxRes = await pool.query(`SELECT id FROM services ORDER BY id DESC LIMIT 1`);
+    let nextId = '01';
+    if (maxRes.rows.length > 0) {
+      const lastId = parseInt(maxRes.rows[0].id, 10);
+      nextId = String(lastId + 1).padStart(2, '0');
+    }
+
+    const servicePrice = parseFloat(price) || 0.00;
+
+    const result = await pool.query(
+      `INSERT INTO services (id, title, img, price, reference_images)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [nextId, title, img || '', servicePrice, reference_images || '']
+    );
+
+    res.status(201).json({
+      success: true,
+      message: 'Service created successfully.',
+      service: result.rows[0]
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Delete a photography service
+ */
+const deleteService = async (req, res, next) => {
+  try {
+    const serviceId = req.params.id;
+
+    const result = await pool.query(
+      'DELETE FROM services WHERE id = $1 RETURNING *',
+      [serviceId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Service not found.' });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Service deleted successfully.'
+    });
   } catch (error) {
     next(error);
   }
@@ -489,9 +627,13 @@ module.exports = {
   getOrderById,
   updateOrder,
   getProducts,
+  createProduct,
   updateProduct,
+  deleteProduct,
   getServices,
+  createService,
   updateService,
+  deleteService,
   getUsers,
   getUserById,
   deleteUser,

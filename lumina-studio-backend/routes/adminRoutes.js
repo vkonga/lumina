@@ -16,10 +16,14 @@ router.get('/orders/:id', adminController.getOrderById);
 router.patch('/orders/:id', adminController.updateOrder);
 
 router.get('/products', adminController.getProducts);
+router.post('/products', adminController.createProduct);
 router.patch('/products/:id', adminController.updateProduct);
+router.delete('/products/:id', adminController.deleteProduct);
 
 router.get('/services', adminController.getServices);
+router.post('/services', adminController.createService);
 router.patch('/services/:id', adminController.updateService);
+router.delete('/services/:id', adminController.deleteService);
 
 router.get('/users', adminController.getUsers);
 router.get('/users/:id', adminController.getUserById);
